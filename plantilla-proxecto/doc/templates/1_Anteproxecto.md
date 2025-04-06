@@ -138,14 +138,14 @@
 ## 3- Requirimentos técnicos
 
 > - **Infraestructura:**
->   - Dominio web: 10 € - 20 € anuales
->   - Alojamiento web: 20 € - 40 € al mes.
->   - Servidor de base de datos: 15 € - 30 € al mes
->   - Almacenamiento y memoria: 50 € - 200 € al mes
->   - Comercio electrónico: 300 € - 600 € al mes
->   - Gestión de redes sociales: 1.000 € - 1.500 € al mes
->   - CRM para la gestión de clientes: 100 € - 200 € al mes
->   - Ciberseguridad: 500 € - 1.900 €
+>   - Dominio web: 10 € - 20 € anuais
+>   - Aloxamento web: 20 € - 40 € ó mes.
+>   - Servidor de base de datos: 15 € - 30 € ó mes
+>   - Almacenamento e memoria: 50 € - 200 € ó mes
+>   - Comercio electrónico: 300 € - 600 € ó mes
+>   - Xestión de redes sociais: 1.000 € - 1.500 € ó mes
+>   - CRM para a xestión de clientes: 100 € - 200 € ó mes
+>   - Ciberseguridade: 500 € - 1.900 €
 > 
 > Total mensual estimado: 1.985 € - 4.471 €
 >
