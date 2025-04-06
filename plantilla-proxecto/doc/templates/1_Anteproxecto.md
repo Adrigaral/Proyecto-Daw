@@ -25,13 +25,20 @@
 
 ## 1- Descrición do proxecto
 
-> _EXPLICACIÓN_: Realiza unha breve descrición do anteproxecto.Resalta o fundamental *coas túas propias palabras\*\*. Utiliza unha linguaxe correcta, *pero natural\*\*, que o entenda todo o mundo, mesmo e en especial, as persoas que non teñan un coñecemento técnico avanzado. Pode ser un estracto ou resumo de apartados que xa contemples noutros ficheiros.
+> O proxecto consistirá nunha páxina web no que os usuarios poderán crear receitas de cociña e compartilas coa comunidade para que todos teñan acceso a elas xa que a maioría de recursos, encóntranse en blogs, Facebook ou en Youtube polo que non hai unha rede social dedicada a este tipo de servizo exclusivamente. Ademáis, os usuarios poderán actualizar as súas receitas, eliminalas, gardalas no seu muro e buscar segundo a receita que queiran procurar. Así tamén foméntase a creatividade na cociña e formar unha bonita comunidade.
 >
-> Neste apartado trátase de describir a análise realizada e a toma de decisións adoptada sobre aspectos básicos ou iniciais do proxecto como:
+> Como propósito sería ofrecer unha interfaz sinxela e amigable para un fácil acceso para todo tipo de usuarios e mellorar a interacción a este tipo de servizo.
 >
-> - ¿En que consiste o noso proxecto? ¿Cal é o propósito principal da aplicación a desenvolver? ¿Cales son os obxectivos?
-> - ¿O desenvolvemento da aplicación abre unha oportunidade de negocio? ¿É posible comercializala? Como?
-> - ¿Que tecnoloxías son as máis axeitadas para a realización do proxecto?
+> A aplicación sería gratuíta aínda que se poderían incluír algunhas funcións premium como por exemplo, poder gardar receitas ilimitadas cousa que por defecto poderíamos gardar hasta 10 por exemplo ou que algunhas receitas que fosen exclusivas polo que faría falta unha suscripción.
+>
+> As tecnoloxías axeitadas para a súa realización serían as seguintes:
+> - Frontent
+>   - HTML5, CSS3, JavaScript.
+>   - Prototipado con Figma.
+>   - Validación de formularios e uso de librerías JavaScript.
+> - Backend
+>   - PHP 
+>   - Base de datos en MariaDB
 
 ## 2- Empresa
 
@@ -39,30 +46,42 @@
 
 ### 2.1- Idea de negocio
 
-> _EXPLICACIÓN_: Define o producto central, o valor engadido e a utilidade. Se se ogrecen productos aumentados, indicalo tamén.
+> - O producto central é unha páxina web destinada a unha rede social baseada nun CRUD de receitas de cociña e a interación destas.
+> - Como valor engadido cóntase cunha conexión directa coa comunidade mediante receitas.
+> - A utilidade e que os usuarios accedan á páxina para facilitar a procura de receitas e descubrimento das mismas, polo que se poda crear unha comunidade grande e necesaria para un ámbito tan necesario como é a cociña.
+>  - Pódese ofrecer unha suscripción para ter máis funcións dentro da páxina.
 
 ### 2.2- Xustificación da idea
 
-> _EXPLICACIÓN_: Neste apartado incluirase a información necesaria para xustificar a realización do proxecto. Debe indicarse como xurdiu a idea do proxecto, que obxectivo se persegue coa súa posta en marcha e/ou que problema vai resolver.
+> Este proxecto ten como finalidade a sinxela interacción do usuario cas receitas de cociña compartidas polos demáis usuarios e promover o uso desta ferramenta. Descubrir novas formas e métodos para cociñar e facilitar o acceso a estos contidos dende a plataforma.
+> 
+> Existe unha páxina na que se poden compartir receitas e permite a interacción entre usuarios ou oitras páxinas aínda que son inglesas pero sen interacción ou máis restrinxido. Aínda que o que se busca na páxina que se vai a realizar neste proxecto, ten como finalidade ser máis sinxela e fácil de acceder e promover a inspiración culinaria.
+> 
+> O segmento de mercado e insuficientemente atendido xa que é incómodo buscar e buscar receitas por internet e apenas hai redes destinadas a este uso e ao meu parecer, búscase unha rede o suficientemente simple e interactiva para que a cociña chegue a máis persoas e fomentar este bonito ámbito.
+> 
+> O proxecto busca unha mellora no mercado e unha interacción social entre usuarios.
 >
-> En este apartado indicade a nivel de idea de negocio:
->
-> - ¿Cal é a necesidade ou necesidades que se pretenden cubrir ou satisfacer?
-> - ¿Existen na actualidade aplicacións ou productos que tenten dar resposta a esa(s) necesidade(s)? ¿En que medida o conseguen?
-> - ¿Trátase de un segmento de mercado desabastecido ou insuficientemente atendido?
-> - ¿Un produto ineficiente? Un mercado novo?
->
-> Para sustentar as xustificación deberás proporcionar datos. Fontes máis utilizadas: INE, IGE, Informes sectoriais de
-> Industria, Statista... Deberás facer unha DAFO.
+> Análisis DAFO:
+> - Debilidades
+>   - Competencia entre Cookpad e páxinas inglesas como AllRecipes.
+>   - Atracción de usuarios á páxina ademáis das interaccións.
+> - Ameazas
+>   - Máis competencias xa que o sector está en fase de incremento.
+>   - Contar con público de todos os países para promover o sector a través da páxina.
+> - Fortalezas
+>   - Interacción social e formación dunha bonita comunidade.
+>   - Facilidade para personalizar receitas.
+>   - Necesidade para os usuarios.
+> - Oportunidades
+>   - Maior volume de usuarios que formen parte da plataforma.
 
 ### 2.3- Segmento de clientes
 
-> _EXPLICACIÓN_: Neste apartado debes indicar a quen irá dirixido o negocio, os potenciales clientes, respostando as seguinte pregunta: ¿A quen está dirixido?
+> O proxecto vai dedicado a todo tipo de persoas tanto como para os expertos na cociña como para os máis novos ademáis das persoas que se queren coidar máis con receitas saludables como para a xente dietética. Aprender a cociñar dende receitas simples ata receitas máis elaboradas. Tamén así se garante o descubrimento dos paladares das persoas e a creatividade polo que se busca promover o sector.
 >
-> Debes:
+> Ademáis según un informe atopado nesta páxina: https://sabormex.es/2024/02/23/4-de-cada-10-jovenes-espanoles-aprende-a-cocinar-con-las-redes-sociales-2/, 4 de cada 10 xóvenes aprenden a cociñar cas redes sociais xa que hai moitos estudantes buscan facer de comer cousas sinxelas pero saciantes e aprender. Aínda que tamén moitas persoas que teñen como hobbie a cociña, utilizan as redes para aprender e promover coñecementos.
 >
-> - Indicar o segmento ou segmentos cos rasgos principais e cuantificar o mercado.
-> - E se é o caso, diferenciar entre usuario e cliente.
+> De momento contamos con só usuarios aínda que podemos contar con clientes si añadimos unha suscrición premium polo tanto, serían os que pagarían dita suscrición.
 
 ### 2.4- Competencia
 
@@ -118,23 +137,35 @@
 
 ## 3- Requirimentos técnicos
 
-> _EXPLICACIÓN_: Descrición dos medios materiais e das tecnoloxías necesarias que se usarán para desenvolver o proxecto incluíndo as linguaxes de programación frontend e backend, técnicas, librerías, bases de datos, servizos usados, servidores, API’s, etc.
+> - **Infraestructura:**
+>   - Dominio web: 10 € - 20 € anuales
+>   - Alojamiento web: 20 € - 40 € al mes.
+>   - Servidor de base de datos: 15 € - 30 € al mes
+>   - Almacenamiento y memoria: 50 € - 200 € al mes
+>   - Comercio electrónico: 300 € - 600 € al mes
+>   - Gestión de redes sociales: 1.000 € - 1.500 € al mes
+>   - CRM para la gestión de clientes: 100 € - 200 € al mes
+>   - Ciberseguridad: 500 € - 1.900 €
+> 
+> Total mensual estimado: 1.985 € - 4.471 €
 >
-> - **Infraestructura:** dominio web, servidor web dedicado, servidor de base de datos, almacenamento, memoria, ...
-> - **Backend:** tecnoloxías usadas.
-> - **Frontend:** tecnoloxías usadas
+> - **Backend**
+>   - PHP 
+>   - Framework como Laravel
+>   - Base de datos en MariaDB
+> 
+> - **Frontend**
+>   - HTML5, CSS3, JavaScript.
+>   - Prototipado con Figma.
+>   - Validación de formularios e uso de librerías JavaScript.
 
 ## 4- Planificación
-
-> _EXPLICACIÓN_: Inclúe un calendario co tempo estimado a adicar a cada fase do proxecto.
+> **Calendario**
 >
-> O proxecto estará formado polas seguintes fases:
->
-> - Estudo preliminar
-> - Análise
-> - Deseño
-> - Codificación e probas (debe ser a fase máis longa).
->
-> Debe facerse un calendario ou un diagrama de Gantt indicando, para cada fase, a data de inicio, a súa duración e breve descrición das tarefas a realizar.
+> Fase 1: Anteproxecto -> 7 de abril
+> Fase 2: Análise (requerimentos do sistema) -> 8 - 21 de abril
+> Fase 3: Deseño -> 22 - 28 de abril
+> Fase 4: Codificación e probas -> 29 de abril - 2 de xuño
+> Fase 5: Implantación -> 2 - 9 de xuño
 
 [**<-Anterior**](../../README.md)
