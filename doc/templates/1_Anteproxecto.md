@@ -18,18 +18,21 @@
       - [2.8.3- Conclusión](#283--conclusión)
   - [3- Requirimentos técnicos](#3--requirimentos-técnicos)
   - [4- Planificación](#4--planificación)
-
+  - 
+**QUITAMOS LOS COMENTARIOS QUE OS DEJEO Y QUITAS EL ">" DE DELANTE DE CADA LÍNEA**
 > _EXPLICACIÓN_: Este documento será a páxina de explicación de en que consiste o teu proxecto. Coida a súa redacción con todo ou teu mimo. Elimina posteriormente todas as lineas "EXPLICACIÓN" cando creas finalizada a súa redacción.
 > Podes acompañar á redacción deste ficheiro con imaxes, pero non abuses deles.
 > Explica da mellor forma posible de en que consiste o proxecto é que ferramentas e linguaxes de programación empregarás.
 
 ## 1- Descrición do proxecto
 
-> O proxecto consistirá nunha páxina web no que os usuarios poderán crear receitas de cociña e compartilas coa comunidade para que todos teñan acceso a elas xa que a maioría de recursos, encóntranse en blogs, Facebook ou en Youtube polo que non hai unha rede social dedicada a este tipo de servizo exclusivamente. Ademáis, os usuarios poderán actualizar as súas receitas, eliminalas, gardalas no seu muro e buscar segundo a receita que queiran procurar. Así tamén foméntase a creatividade na cociña e formar unha bonita comunidade.
+O proxecto consistirá nunha páxina web no que os usuarios poderán crear receitas de cociña e compartilas coa comunidade para que todos teñan acceso a elas xa que a maioría de recursos, encóntranse en blogs, Facebook ou en Youtube polo que non hai unha rede social dedicada a este tipo de servizo exclusivamente. Ademáis, os usuarios poderán actualizar as súas receitas, eliminalas, gardalas no seu muro e buscar segundo a receita que queiran procurar. Así tamén foméntase a creatividade na cociña e formar unha bonita comunidade.
 >
 > Como propósito sería ofrecer unha interfaz sinxela e amigable para un fácil acceso para todo tipo de usuarios e mellorar a interacción a este tipo de servizo.
 >
 > A aplicación sería gratuíta aínda que se poderían incluír algunhas funcións premium como por exemplo, poder gardar receitas ilimitadas cousa que por defecto poderíamos gardar hasta 10 por exemplo ou que algunhas receitas que fosen exclusivas polo que faría falta unha suscripción.
+>
+**ESTO ABAJO. AQUÍ SOLO UN RESUMEN GENERAL. EJ. Emplearase html5, CSS3 e JavaScript para o frontend e PHP e MySQL para o backend.**
 >
 > As tecnoloxías axeitadas para a súa realización serían as seguintes:
 > - Frontent
@@ -160,7 +163,9 @@
 >   - Validación de formularios e uso de librerías JavaScript.
 
 ## 4- Planificación
-> **Calendario**
+
+>**SE PIDE DIAGRAMA GANTT. NO ES CALCAR LO QUE YO OS PONGO DE LAS FASES DE ENTREGA, ES LO QUE CREEIS TU Y LAS FASES QUE REALMENTE APLICARÍAS**
+**Calendario**
 >
 > Fase 1: Anteproxecto -> 7 de abril
 > Fase 2: Análise (requerimentos do sistema) -> 8 - 21 de abril
