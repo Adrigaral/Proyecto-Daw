@@ -8,57 +8,56 @@
   - [5- Normativa](#5--normativa)
   - [6- Melloras futuras](#6--melloras-futuras)
 
-> *EXPLICACION*: Este documento describe os requirimentos para "nome do proxecto" especificando que funcionalidade ofrecerá e de que xeito.
-
 ## 1- Descrición Xeral
 
->*EXPLICACION*: Descrición Xeral do proxecto
+> O proxecto consiste no desenvolvemento dunha plataforma web na que os usuarios poderán rexistrarse, crear un perfil cos datos do seu vehículo, consultar eventos do mundo do motor (quedadas, concentracións, exhibicións, etc.) e inscribirse neles sempre que cumpran os requisitos establecidos. Os usuarios tamén poderán, mediante suscrición, crear os seus propios eventos, moderalos e xestionar as inscricións doutros participantes.
+>
+> A páxina estará construída con tecnoloxías web (HTML, CSS, JavaScript, PHP e MariaDB) e terá un deseño responsive accesible desde dispositivos móbiles ou de escritorio.
 
 ## 2- Funcionalidades
 
->*EXPLICACION* Describir que servizos ou operacións se van poder realizar por medio do noso proxecto, indicando que actores interveñen en cada caso.
->
-> Enumeradas, de maneira que na fase de deseño poidamos definir o diagrama ou configuración correspondente a cada funcionalidade.
-> Cada función ten uns datos de entrada e uns datos de saída. Entre os datos de entrada e de saída, realízase un proceso, que debe ser explicado.
-
-Exemplo:
-
 | Acción   |  Descrición        |
 |----------|--------------------|
-| Alta de productos   | Dar de alta os productos na base de datos|
-| Modificar productos | Modificación de productos na base de datos|
-| Presentación dos productos  | Mostra dos productos por medio da páxina web |
+| Rexistro de usuario	| Rexistro mediante formulario, gardando os datos do usuario e do seu vehículo.| 
+| Inicio de sesión | Login con usuario e contrasinal, con validación segura.|
+| Ver eventos dispoñibles |	Presentación de todos os eventos públicos activos, con filtros por zona, data ou tipo de evento.|
+| Inscrición a eventos | Posibilidade de inscribirse nun evento se o vehículo cumpre os requisitos.|
+| Creación de eventos | Usuarios con suscrición activa poderán crear eventos, definindo data, lugar, requisitos e límite de prazas.|
+|Modificación/eliminación	| Os usuarios poderán editar ou eliminar os seus propios eventos ou datos persoais.|
+|Validación de vehículos | O sistema comprobará se o vehículo do usuario inscrito cumpre os requisitos de participación no evento.|
+| Panel de administración	| Para xestión por parte do administrador: xestionar usuarios, eventos, (bloquear contas) ou revisar contidos.|
+|Sistema de suscrición | Integración dunha pasarela de pago para activar a opción de crear eventos.|
+| Panel de perfil |	Sección de usuario onde poderá consultar eventos inscritos, eventos creados e modificar o perfil ou vehículo.|
 
 ## 3- Tipos de usuarios
-
-> *EXPLICACION* Describir os tipos de usuario que poderán acceder ao noso sistema. Habitualmente os tipos de usuario veñen definidos polas funcionalidades ás cales teñen acceso. En termos xerais existen moitos grupos de usuarios: anónimos, novos, rexistrados, bloqueados, confirmados, verificados, administradores, etc.
+> - Usuario anónimo: pode ver eventos dispoñibles, pero non inscribirse nin acceder a funcionalidades personalizadas.
 >
-> Exemplo:
->
-> - Usuario xenérico, que terá acceso a ...
-> - Usuario técnico, que poderá...
+> - Usuario rexistrado: pode inscribirse a eventos, editar o seu perfil, consultar eventos pasados e acceder a funcionalidades básicas.
+> 
+> - Usuario con subscrición: ten acceso adicional á creación de eventos e á xestión dos mesmos.
+> 
+> - Administrador: controla o sistema, pode eliminar eventos ou usuarios, moderar contidos e resolver incidencias.
 
 ## 4- Contorno operacional
-
-> *EXPLICACION* Neste apartado deben describirse os recursos necesarios, dende o punto de vista do usuario, para poder operar coa aplicación web. Habitualmente consiste nun navegador web actualizado e unha conexión a internet.
-Se é necesario algún hardware ou software adicional, deberá indicarse.
+> Para utilizar a aplicación web, os usuarios precisarán un navegador web actualizado (Chrome, Firefox, Edge, Safari...) e unha conexión a Internet estable.
+A aplicación será compatible con móbiles e tablets, así como con ordenadores.
+> 
+> O sistema basearase nun servidor con soporte para PHP e base de datos MariaDB.
 
 ## 5- Normativa
-
-> *EXPLICACION* Investigarase que normativa vixente afecta ao desenvolvemento do proxecto e de que maneira. O proxecto debe adaptarse ás esixencias legais dos territorios onde vai operar.
-> 
-> Pola natureza dos sistema de información, unha lei que se vai a ter que mencionar de forma obrigatoria é la [Ley Orgánica 3/2018, de 5 de diciembre, de Protección de Datos Personales y garantía de los derechos digitales (LOPDPGDD)](https://www.boe.es/buscar/act.php?id=BOE-A-2018-16673). O ámbito da LOPDPGDD é nacional. Se a aplicación está pensada para operar a nivel europeo, tamén se debe facer referencia á [General Data Protection Regulation (GDPR)](https://eur-lex.europa.eu/eli/reg/2016/679/oj). Na documentación debe afirmarse que o proxecto cumpre coa normativa vixente.
->
-> Para cumplir a LOPDPGDD e/ou GDPR debe ter un apartado na web onde se indique quen é a persoa responsable do tratamento dos datos e para que fins se van utilizar. Habitualmente esta información estructúrase nos seguintes apartados:
->
-> - Aviso legal.
-> - Política de privacidade.
-> - Política de cookies.
->
-> É acosenllable ver [exemplos de webs](https://www.spotify.com/es/legal/privacy-policy/) que conteñan textos legais referenciando a LOPDPGDD ou GDPR.
+> - [Aviso legal](https://www.motorlandaragon.com/es/aviso-legal.html)
+> - [Política de privacidade](https://www.motorlandaragon.com/es/politica-de-privacidad).
+> - [Política de cookies](https://www.motorlandaragon.com/es/politica-de-cookies.html).
 
 ## 6- Melloras futuras
-
-> *EXPLICACION* É posible que o noso proxecto se centre en resolver un problema concreto que se poderá ampliar no futuro con novas funcionalidades, novas interfaces, etc.
+> - Envío de emails de confirmación de inscricións e recordatorios de eventos próximos.
+>
+> - Sistema de puntuación e valoración de eventos.
+> 
+> - Chat interno entre participantes dun evento.
+> 
+> - Mapa interactivo con eventos por localización.
+> 
+> - Integración con redes sociais para compartir eventos directamente.
 
 [**<-Anterior**](../../README.md)
