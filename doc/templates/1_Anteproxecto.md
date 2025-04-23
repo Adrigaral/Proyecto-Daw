@@ -160,6 +160,7 @@ Backend:
 
 ## 3- Requirimentos técnicos
 
+**AQUÍ NO PONEMOS PRECIOS. ESO ES EN COSTES**
 > - **Infraestructura:**
 > - Precios diseñador web por hora: 50 €/h
 > - Dominio web: 10 € - 20 € anuais
@@ -173,16 +174,18 @@ Backend:
 > Total fixo estimado: 1.519,17 €	- 2.367,51 € ó mes
 >
 > - **Backend**
->   - PHP 
->   - Framework como Laravel
+>   - PHP **PARA QUE PHP SI USAS LARAVEL**
+>   - Framework como Laravel **LARAVEL ES UN FRAMEWORK DE PHP**
 >   - Base de datos en MariaDB
 > 
 > - **Frontend**
 >   - HTML5, CSS3, JavaScript.
 >   - Prototipado con Figma.
->   - Validación de formularios e uso de librerías JavaScript.
+
 
 ## 4- Planificación
+
+**FALTA EL DIAGRAMA DE GANT Y SERÍA LO QUE ESTIMARÍAS PARA LA REALIZACIÓN DE TODO EL PROYECTO**
 > **Calendario**
 >
 > Fase 1: Anteproxecto -> 7 de abril
