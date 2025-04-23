@@ -19,34 +19,31 @@
   - [3- Requirimentos técnicos](#3--requirimentos-técnicos)
   - [4- Planificación](#4--planificación)
 
-> _EXPLICACIÓN_: Este documento será a páxina de explicación de en que consiste o teu proxecto. Coida a súa redacción con todo ou teu mimo. Elimina posteriormente todas as lineas "EXPLICACIÓN" cando creas finalizada a súa redacción.
-> Podes acompañar á redacción deste ficheiro con imaxes, pero non abuses deles.
-> Explica da mellor forma posible de en que consiste o proxecto é que ferramentas e linguaxes de programación empregarás.
-
 
 ## 1- Descrición do proxecto
 
-> O proxecto consistirá nunha páxina web na que os usuarios poderán descubrir eventos e quedadas relacionadas co mundo do motor. Estes eventos poden ser de distintos tipos: exposicións de coches clásicos, quedadas tuning, concentracións temáticas, etc.
->
-> O sistema permitirá aos usuarios rexistrarse, iniciar sesión, consultar os eventos dispoñibles e inscribirse como participantes se o seu coche cumpre cos requisitos do evento. Os usuarios poderán subir información sobre o seu vehículo (marca, modelo, ano) para validar automaticamente se poden participar nun evento específico.
->
-> A maiores, ofrecerase unha suscrición premium, que permitirá aos usuarios desbloquear a opción de crear os seus propios eventos.
->
-> Funcionalidades principais:
-> - CRUD de eventos.
-> - Inscrición a eventos con validación de compatibilidade do coche
-> - Roles de usuario: participante e organizador
-> - Login, rexistro e sistema de sesións
-> - Suscrición premium para creación de eventos
->
-> Tecnoloxías:
-> - Frontend:
->   - HTML5, CSS3, JavaScript
->   - Prototipado con Figma
->
-> - Backend:
->   - PHP
->   - Base de datos MariaDB
+O proxecto consistirá nunha páxina web na que os usuarios poderán descubrir eventos e quedadas relacionadas co mundo do motor. Estes eventos poden ser de distintos tipos: exposicións de coches clásicos, quedadas tuning, concentracións temáticas, etc.
+O sistema permitirá aos usuarios rexistrarse, iniciar sesión, consultar os eventos dispoñibles e inscribirse como participantes se o seu coche cumpre cos requisitos do evento. Os usuarios poderán subir información sobre o seu vehículo (marca, modelo, ano) para validar automaticamente se poden participar nun evento específico.
+
+A maiores, ofrecerase unha suscrición premium, que permitirá aos usuarios desbloquear a opción de crear os seus propios eventos.
+**AQUÍ SOLO PONEMOS UN RESUMEN. LAS TECNOLOGÍAS SE PONEN EN REQUISITOS TÉCNICOS.**
+
+**ESTO FUERA
+Funcionalidades principais:
+- CRUD de eventos.
+- Inscrición a eventos con validación de compatibilidade do coche
+- Roles de usuario: participante e organizador
+- Login, rexistro e sistema de sesións
+- Suscrición premium para creación de eventos**
+
+Tecnoloxías:
+- Frontend:
+- HTML5, CSS3, JavaScript
+- Prototipado con Figma
+
+Backend:
+- PHP
+- Base de datos MariaDB
 
 ## 2- Empresa
 
