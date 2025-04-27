@@ -18,32 +18,53 @@
       - [2.8.3- Conclusión](#283--conclusión)
   - [3- Requirimentos técnicos](#3--requirimentos-técnicos)
   - [4- Planificación](#4--planificación)
+  - 
+**QUITAMOS LOS COMENTARIOS QUE OS DEJEO Y QUITAS EL ">" DE DELANTE DE CADA LÍNEA**
+> _EXPLICACIÓN_: Este documento será a páxina de explicación de en que consiste o teu proxecto. Coida a súa redacción con todo ou teu mimo. Elimina posteriormente todas as lineas "EXPLICACIÓN" cando creas finalizada a súa redacción.
+> Podes acompañar á redacción deste ficheiro con imaxes, pero non abuses deles.
+> Explica da mellor forma posible de en que consiste o proxecto é que ferramentas e linguaxes de programación empregarás.
 
 
 ## 1- Descrición do proxecto
 
-O proxecto consistirá nunha páxina web na que os usuarios poderán descubrir eventos e quedadas relacionadas co mundo do motor. Estes eventos poden ser de distintos tipos: exposicións de coches clásicos, quedadas tuning, concentracións temáticas, etc.
-O sistema permitirá aos usuarios rexistrarse, iniciar sesión, consultar os eventos dispoñibles e inscribirse como participantes se o seu coche cumpre cos requisitos do evento. Os usuarios poderán subir información sobre o seu vehículo (marca, modelo, ano) para validar automaticamente se poden participar nun evento específico.
-
-A maiores, ofrecerase unha suscrición premium, que permitirá aos usuarios desbloquear a opción de crear os seus propios eventos.
-**AQUÍ SOLO PONEMOS UN RESUMEN. LAS TECNOLOGÍAS SE PONEN EN REQUISITOS TÉCNICOS.**
-
-**ESTO FUERA
-Funcionalidades principais:
-- CRUD de eventos.
-- Inscrición a eventos con validación de compatibilidade do coche
-- Roles de usuario: participante e organizador
-- Login, rexistro e sistema de sesións
-- Suscrición premium para creación de eventos**
-
-Tecnoloxías:
-- Frontend:
-- HTML5, CSS3, JavaScript
-- Prototipado con Figma
-
-Backend:
-- PHP
-- Base de datos MariaDB
+<<<<<<< HEAD
+O proxecto consistirá nunha páxina web no que os usuarios poderán crear receitas de cociña e compartilas coa comunidade para que todos teñan acceso a elas xa que a maioría de recursos, encóntranse en blogs, Facebook ou en Youtube polo que non hai unha rede social dedicada a este tipo de servizo exclusivamente. Ademáis, os usuarios poderán actualizar as súas receitas, eliminalas, gardalas no seu muro e buscar segundo a receita que queiran procurar. Así tamén foméntase a creatividade na cociña e formar unha bonita comunidade.
+=======
+> O proxecto consistirá nunha páxina web na que os usuarios poderán descubrir eventos e quedadas relacionadas co mundo do motor. Estes eventos poden ser de distintos tipos: exposicións de coches clásicos, quedadas tuning, concentracións temáticas, etc.
+>>>>>>> 8e9263a (Anteproxecto e Analise actualizados)
+>
+> O sistema permitirá aos usuarios rexistrarse, iniciar sesión, consultar os eventos dispoñibles e inscribirse como participantes se o seu coche cumpre cos requisitos do evento. Os usuarios poderán subir información sobre o seu vehículo (marca, modelo, ano) para validar automaticamente se poden participar nun evento específico.
+>
+> A maiores, ofrecerase unha suscrición premium, que permitirá aos usuarios desbloquear a opción de crear os seus propios eventos.
+>
+<<<<<<< HEAD
+**ESTO ABAJO. AQUÍ SOLO UN RESUMEN GENERAL. EJ. Emplearase html5, CSS3 e JavaScript para o frontend e PHP e MySQL para o backend.**
+>
+> As tecnoloxías axeitadas para a súa realización serían as seguintes:
+> - Frontent
+>   - HTML5, CSS3, JavaScript.
+>   - Prototipado con Figma.
+>   - Validación de formularios e uso de librerías JavaScript.
+> - Backend
+>   - PHP 
+>   - Base de datos en MariaDB
+=======
+> Funcionalidades principais:
+> - CRUD de eventos.
+> - Inscrición a eventos con validación de compatibilidade do coche
+> - Roles de usuario: participante e organizador
+> - Login, rexistro e sistema de sesións
+> - Suscrición premium para creación de eventos
+>
+> Tecnoloxías:
+> - Frontend:
+>   - HTML5, CSS3, JavaScript
+>   - Prototipado con Figma
+>
+> - Backend:
+>   - PHP
+>   - Base de datos MariaDB
+>>>>>>> 8e9263a (Anteproxecto e Analise actualizados)
 
 ## 2- Empresa
 
@@ -160,7 +181,6 @@ Backend:
 
 ## 3- Requirimentos técnicos
 
-**AQUÍ NO PONEMOS PRECIOS. ESO ES EN COSTES**
 > - **Infraestructura:**
 > - Precios diseñador web por hora: 50 €/h
 > - Dominio web: 10 € - 20 € anuais
@@ -174,19 +194,19 @@ Backend:
 > Total fixo estimado: 1.519,17 €	- 2.367,51 € ó mes
 >
 > - **Backend**
->   - PHP **PARA QUE PHP SI USAS LARAVEL**
->   - Framework como Laravel **LARAVEL ES UN FRAMEWORK DE PHP**
+>   - PHP 
+>   - Framework como Laravel
 >   - Base de datos en MariaDB
 > 
 > - **Frontend**
 >   - HTML5, CSS3, JavaScript.
 >   - Prototipado con Figma.
-
+>   - Validación de formularios e uso de librerías JavaScript.
 
 ## 4- Planificación
 
-**FALTA EL DIAGRAMA DE GANT Y SERÍA LO QUE ESTIMARÍAS PARA LA REALIZACIÓN DE TODO EL PROYECTO**
-> **Calendario**
+>**SE PIDE DIAGRAMA GANTT. NO ES CALCAR LO QUE YO OS PONGO DE LAS FASES DE ENTREGA, ES LO QUE CREEIS TU Y LAS FASES QUE REALMENTE APLICARÍAS**
+**Calendario**
 >
 > Fase 1: Anteproxecto -> 7 de abril
 > 
