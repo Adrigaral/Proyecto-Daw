@@ -2,6 +2,7 @@
 
 - [Anteproxecto fin de ciclo](#anteproxecto-fin-de-ciclo)
   - [1- Descrición do proxecto](#1--descrición-do-proxecto)
+- [O proxecto consistirá nunha páxina web no que os usuarios poderán crear receitas de cociña e compartilas coa comunidade para que todos teñan acceso a elas xa que a maioría de recursos, encóntranse en blogs, Facebook ou en Youtube polo que non hai unha rede social dedicada a este tipo de servizo exclusivamente. Ademáis, os usuarios poderán actualizar as súas receitas, eliminalas, gardalas no seu muro e buscar segundo a receita que queiran procurar. Así tamén foméntase a creatividade na cociña e formar unha bonita comunidade.](#o-proxecto-consistirá-nunha-páxina-web-no-que-os-usuarios-poderán-crear-receitas-de-cociña-e-compartilas-coa-comunidade-para-que-todos-teñan-acceso-a-elas-xa-que-a-maioría-de-recursos-encóntranse-en-blogs-facebook-ou-en-youtube-polo-que-non-hai-unha-rede-social-dedicada-a-este-tipo-de-servizo-exclusivamente-ademáis-os-usuarios-poderán-actualizar-as-súas-receitas-eliminalas-gardalas-no-seu-muro-e-buscar-segundo-a-receita-que-queiran-procurar-así-tamén-foméntase-a-creatividade-na-cociña-e-formar-unha-bonita-comunidade)
   - [2- Empresa](#2--empresa)
     - [2.1- Idea de negocio](#21--idea-de-negocio)
     - [2.2- Xustificación da idea](#22--xustificación-da-idea)
@@ -18,8 +19,6 @@
       - [2.8.3- Conclusión](#283--conclusión)
   - [3- Requirimentos técnicos](#3--requirimentos-técnicos)
   - [4- Planificación](#4--planificación)
-  - 
-**QUITAMOS LOS COMENTARIOS QUE OS DEJEO Y QUITAS EL ">" DE DELANTE DE CADA LÍNEA**
 > _EXPLICACIÓN_: Este documento será a páxina de explicación de en que consiste o teu proxecto. Coida a súa redacción con todo ou teu mimo. Elimina posteriormente todas as lineas "EXPLICACIÓN" cando creas finalizada a súa redacción.
 > Podes acompañar á redacción deste ficheiro con imaxes, pero non abuses deles.
 > Explica da mellor forma posible de en que consiste o proxecto é que ferramentas e linguaxes de programación empregarás.
@@ -204,18 +203,6 @@ O proxecto consistirá nunha páxina web no que os usuarios poderán crear recei
 >   - Validación de formularios e uso de librerías JavaScript.
 
 ## 4- Planificación
-
->**SE PIDE DIAGRAMA GANTT. NO ES CALCAR LO QUE YO OS PONGO DE LAS FASES DE ENTREGA, ES LO QUE CREEIS TU Y LAS FASES QUE REALMENTE APLICARÍAS**
-**Calendario**
->
-> Fase 1: Anteproxecto -> 7 de abril
-> 
-> Fase 2: Análise (requerimentos do sistema) -> 10 - 21 de abril
-> 
-> Fase 3: Deseño -> 23 - 28 de abril
-> 
-> Fase 4: Codificación e probas -> 30 de abril - 2 de xuño
-> 
-> Fase 5: Implantación -> 2 - 9 de xuño
+> ![alt text](../img/Diagrama%20de%20Gantt.png)
 
 [**<-Anterior**](../../README.md)
