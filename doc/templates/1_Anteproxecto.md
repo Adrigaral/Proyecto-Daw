@@ -193,8 +193,7 @@ O proxecto consistirá nunha páxina web no que os usuarios poderán crear recei
 > Total fixo estimado: 1.519,17 €	- 2.367,51 € ó mes
 >
 > - **Backend**
->   - PHP 
->   - Framework como Laravel
+>   - PHP (MVC)
 >   - Base de datos en MariaDB
 > 
 > - **Frontend**
