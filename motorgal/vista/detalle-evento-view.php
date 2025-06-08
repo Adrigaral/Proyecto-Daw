@@ -7,21 +7,41 @@
     <title>Landing Page</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <link rel="stylesheet" href="../estilos/style.css">
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 </head>
 
 <body class="d-flex flex-column min-vh-100">
     <!-- Header -->
-    <header class="sticky-top bg-white py-3 px-4 d-flex justify-content-between align-items-center border-bottom">
-        <a href="../index.php">
-            <img src="../img/motorgal.png" alt="Logo de Motorgal" id="logo">
-        </a>
-        <nav class="w-100 ps-4">
-            <ul class="nav d-flex justify-content-end">
-                <li class="nav-item"><button type="button" class="btn"><a class="nav-link" href="?controller=VehiculoController&action=listarVehiculos">Coches</a></button></li>
-                <li class="nav-item"><button type="button" class="btn"><a class="nav-link" href="?controller=UsuarioController&action=logout">Salir</a></button></li>
-            </ul>
-        </nav>
+    <header class="sticky-top bg-white py-3 px-4 border-bottom">
+        <div class="d-flex justify-content-between align-items-center">
+            <!-- Logo -->
+            <a href="index.php?user" class="d-flex align-items-center me-4">
+                <img src="../img/motorgal.png" alt="Logo de Motorgal" id="logo">
+            </a>
+
+            <!-- Menú principal -->
+            <nav class="flex-grow-1">
+                <ul class="nav justify-content-evenly">
+                    <li class="nav-item">
+                        <a class="nav-link text-black" href="?controller=EventoController&action=lista_eventos_activos">Eventos</a>
+                    </li>
+                    <li class="nav-item ">
+                        <a class="nav-link text-black" href="?controller=VehiculoController&action=listarVehiculos">Mis Coches</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-black" href="?controller=EventoController&action=listarEventosUsuario">Inscripciones</a>
+                    </li>
+                </ul>
+            </nav>
+
+            <!-- Botones de usuario -->
+            <div class="d-flex align-items-center gap-4">
+                <p class="mb-0 text-primary"><?= $_SESSION['loged'] ?></p>
+                <a href="?controller=UsuarioController&action=logout" class="btn btn-dark">Salir</a>
+            </div>
+        </div>
     </header>
     <main class="flex-fill">
         <article class="container my-5">
@@ -48,10 +68,15 @@
                         ?>
                     </p>
 
+                    <p>
+                        <strong>Hora:</strong>
+                        <?= htmlspecialchars($evento->getFecha_inicio_evento()->format('H:i')) ?> - <?= htmlspecialchars($evento->getFecha_fin_evento()->format('H:i')) ?>
+                    </p>
+
                     <p><strong>Lugar:</strong> <?= htmlspecialchars($evento->getLugar()) ?></p>
 
                     <p><strong>Estado:</strong>
-                        <span class="badge bg-<?= $evento->getEstado_evento() === 'ACTIVO' ? 'success' : 'secondary' ?>">
+                        <span class="badge bg-<?= $evento->getEstado_evento() === 'ACTIVO' ? 'success' : 'danger' ?>">
                             <?= htmlspecialchars($evento->getEstado_evento()) ?>
                         </span>
                     </p>
@@ -63,25 +88,99 @@
                     <p><strong>Precio:</strong>
                         <?= $evento->getPrecio() == 0.00 ? '<span class="text-success">Gratuito</span>' : '<span class="text-danger">' . htmlspecialchars($evento->getPrecio()) . ' €</span>'; ?>
                     </p>
+                    <div id="map" style="height: 400px;"></div>
+                    <input type="hidden" name="latitud" id="latitud" value="<?= htmlspecialchars($evento->getLatitud()) ?>">
+                    <input type="hidden" name="longitud" id="longitud" value="<?= htmlspecialchars($evento->getLongitud()) ?>">
 
-                    <?php if ($evento->getEstado_evento() === 'ACTIVO'): ?>
-                        <div class="d-flex justify-content-center my-3">
-                            <?php if (!empty($data['inscrito'])): ?>
-                                <form action="index.php?controller=InscribeController&action=quitarInscripcion" method="POST">
-                                    <input type="hidden" name="id_evento" value="<?= htmlspecialchars($data['evento']->getId_evento()) ?>">
-                                    <input type="hidden" name="id_usuario" value="<?= htmlspecialchars($_SESSION['id_usuario'] ?? '') ?>">
-                                    <button type="submit" class="btn btn-dark">Quitar Inscripción</button>
-                                </form>
+                    <?php if (!empty($data['creador']) && isset($_SESSION['id_usuario']) && $data['creador'] == $_SESSION['id_usuario']): ?>
+                        <?php $inscritos = $data['inscritos'] ?? []; ?>
+                        <?php if (($evento->getEstado_evento() === 'ACTIVO' || $evento->getEstado_evento() === 'EN PROGRESO') && !empty($inscritos)): ?>
+                            <div class="container filter my-4">
+                                <div class="d-flex align-items-center justify-content-center flex-wrap gap-3">
+                                    <form method="get" action="index.php" class="d-flex align-items-center gap-2">
+                                        <input type="hidden" name="controller" value="EventoController">
+                                        <input type="hidden" name="action" value="ver_evento">
+                                        <input type="hidden" name="id" value="<?= $evento->getId_evento() ?>">
+                                        <input type="text" name="matricula" class="form-control form-control-sm" placeholder="Buscar por matrícula" value="<?= htmlspecialchars($data['matricula'] ?? '') ?>">
+                                        <button type="submit" class="buscar btn btn-outline-danger btn-sm d-flex align-items-center">Buscar</button>
+                                    </form>
+                                </div>
+                            </div>
+                        <?php endif; ?>
+                        <?php if (!empty($inscritos)): ?>
+                            <h3 class="text-primary fw-bold my-4">Hay <?= $data['totalInscritos'] ?> inscrito<?= $data['totalInscritos'] !== 1 ? 's' : '' ?> en total.</h3>
+                            <div class="table-responsive">
+                                <table class="table table-hover align-middle">
+                                    <thead class="table-primary">
+                                        <tr>
+                                            <th>DNI</th>
+                                            <th>Nombre</th>
+                                            <th>Marca</th>
+                                            <th>Matrículas</th>
+                                            <th>Modelos</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php foreach ($inscritos as $i): ?>
+                                            <tr>
+                                                <td><?= htmlspecialchars($i['dni']) ?></td>
+                                                <td><?= htmlspecialchars($i['nombre']) ?></td>
+                                                <td><?= htmlspecialchars($i['marca']) ?></td>
+                                                <td><?= htmlspecialchars($i['matriculas']) ?></td>
+                                                <td><?= htmlspecialchars($i['modelos']) ?></td>
+                                            </tr>
+                                        <?php endforeach; ?>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <?php else: ?>
+                            <?php if (!empty($data['matricula'])): ?>
+                                <div class="alert alert-warning mt-4">
+                                    No se encontró ninguna coincidencia para la matrícula "<strong><?= htmlspecialchars($data['matricula']) ?></strong>".
+                                </div>
                             <?php else: ?>
-                                <form action="index.php?controller=InscribeController&action=inscribirse" method="POST">
-                                    <input type="hidden" name="id_evento" value="<?= htmlspecialchars($data['evento']->getId_evento()) ?>">
-                                    <input type="hidden" name="id_usuario" value="<?= htmlspecialchars($_SESSION['id_usuario'] ?? '') ?>">
-                                    <button type="submit" class="btn btn-dark">Inscribirse</button>
-                                </form>
+                                <div class="alert alert-info mt-4">No hay ningún usuario inscrito en este evento.</div>
                             <?php endif; ?>
+                        <?php endif; ?>
+                        <!-- Paginación -->
+                        <?php if (!empty($data['total_paginas']) && $data['total_paginas'] > 1): ?>
+                            <nav aria-label="Navegación de páginas">
+                                <ul class="pagination justify-content-center mt-4">
+                                    <?php for ($i = 1; $i <= $data['total_paginas']; $i++): ?>
+                                        <li class="page-item <?= $i == $data['pagina_actual'] ? 'active' : '' ?>">
+                                            <a class="page-link" href="index.php?controller=EventoController&action=ver_evento&id=<?= $data['evento']->getId_evento() ?>&pagina=<?= $i ?>&matricula=<?= urlencode($data['matricula'] ?? '') ?>">
+                                                <?= $i ?>
+                                            </a>
+                                        </li>
+                                    <?php endfor; ?>
+                                </ul>
+                            </nav>
+                        <?php endif; ?>
+                        <div class="text-center mt-4">
+                            <a href="index.php?controller=EventoController&action=lista_eventos_creados" class="btn text-white">
+                                Volver a mis eventos
+                            </a>
                         </div>
                     <?php else: ?>
-                        <p class="text-danger text-center fw-bold">La inscripción ha terminado.</p>
+                        <?php if ($evento->getEstado_evento() === 'ACTIVO'): ?>
+                            <div class="d-flex justify-content-center my-3">
+                                <?php if (!empty($data['inscrito'])): ?>
+                                    <form action="index.php?controller=InscribeController&action=quitarInscripcion" method="POST">
+                                        <input type="hidden" name="id_evento" value="<?= htmlspecialchars($data['evento']->getId_evento()) ?>">
+                                        <input type="hidden" name="id_usuario" value="<?= htmlspecialchars($_SESSION['id_usuario'] ?? '') ?>">
+                                        <button type="submit" class="btn text-white">Quitar Inscripción</button>
+                                    </form>
+                                <?php else: ?>
+                                    <form action="index.php?controller=InscribeController&action=inscribirse" method="POST">
+                                        <input type="hidden" name="id_evento" value="<?= htmlspecialchars($data['evento']->getId_evento()) ?>">
+                                        <input type="hidden" name="id_usuario" value="<?= htmlspecialchars($_SESSION['id_usuario'] ?? '') ?>">
+                                        <button type="submit" class="btn text-white">Inscribirse</button>
+                                    </form>
+                                <?php endif; ?>
+                            </div>
+                        <?php else: ?>
+                            <p class="text-danger text-center fw-bold">La inscripción ha terminado.</p>
+                        <?php endif; ?>
                     <?php endif; ?>
 
                     <?php if (isset($_SESSION['mensaje'])): ?>
@@ -99,8 +198,8 @@
                     <?php endif; ?>
 
                     <div class="text-center mt-4">
-                        <a href="index.php?controller=EventoController&action=lista_eventos_activos" class="btn btn-dark">
-                            Volver a la lista de eventos
+                        <a href="index.php?controller=EventoController&action=lista_eventos_activos" class="btn text-white">
+                            Ir a la lista de eventos
                         </a>
                     </div>
                 </div>
@@ -120,6 +219,7 @@
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../js/mapa-vista.js"></script>
 </body>
 
 </html>

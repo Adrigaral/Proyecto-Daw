@@ -113,7 +113,8 @@ class UsuarioController extends Controller
 
             //Creamos la cookie que caducara en 10 minutos.
             setcookie("t_reset", "on", time() + 600, "", "", true, true);
-            header("Location: index.php?controller=EventoController&action=$ruta");
+            // header("Location: index.php?controller=EventoController&action=$ruta");
+            header("Location: index.php?controller=EventoController&action=lista_eventos_activos");
             exit;
         } else {
             $error .= 'Login incorrecto.<br>';

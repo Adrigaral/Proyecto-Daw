@@ -15,7 +15,7 @@
     <header class="sticky-top bg-white py-3 px-4 border-bottom">
         <div class="d-flex justify-content-between align-items-center">
             <!-- Logo -->
-            <a href="index.php?user" class="d-flex align-items-center me-4">
+            <a href="?controller=EventoController&action=lista_eventos_activos" class="d-flex align-items-center me-4">
                 <img src="../img/motorgal.png" alt="Logo de Motorgal" id="logo">
             </a>
 
@@ -23,7 +23,7 @@
             <nav class="flex-grow-1">
                 <ul class="nav justify-content-evenly">
                     <li class="nav-item">
-                        <a class="nav-link text-black" href="inicio.php">Perfil</a>
+                        <a class="nav-link text-black" href="?controller=EventoController&action=lista_eventos_creados">Mis eventos</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-black" href="?controller=EventoController&action=lista_eventos_activos">Eventos</a>
@@ -32,7 +32,7 @@
                         <a class="nav-link text-black" href="?controller=VehiculoController&action=listarVehiculos">Mis Coches</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-black" href="calendario.php">Mis eventos</a>
+                        <a class="nav-link text-black" href="?controller=EventoController&action=listarEventosUsuario">Inscripciones</a>
                     </li>
                 </ul>
             </nav>
@@ -87,9 +87,7 @@
                     <form method="get" action="index.php" class="d-flex align-items-center gap-2">
                         <input type="hidden" name="controller" value="EventoController">
                         <input type="hidden" name="action" value="lista_eventos_activos">
-
                         <input type="text" name="lugar" class="form-control form-control-sm" placeholder="Lugar del evento" value="<?= htmlspecialchars($data['lugar'] ?? '') ?>" style="max-width: 200px;">
-
                         <select name="modelo" class="form-select form-select-sm" style="max-width: 200px;">
                             <option value="">Todos los modelos</option>
                             <?php foreach ($data['modelos'] as $m): ?>
@@ -98,7 +96,6 @@
                                 </option>
                             <?php endforeach; ?>
                         </select>
-
                         <button type="submit" class="buscar btn btn-outline-danger btn-sm d-flex align-items-center">Buscar</button>
                     </form>
                 </div>
@@ -154,6 +151,8 @@
                                                 <input type="hidden" name="controller" value="EventoController">
                                                 <input type="hidden" name="action" value="ver_evento">
                                                 <input type="hidden" name="id" value="<?= $evento->getId_evento() ?>">
+                                                <input type="hidden" name="latitud" id="latitud" value="<?= $evento->getLatitud() ?>">
+                                                <input type="hidden" name="longitud" id="longitud" value="<?= $evento->getLongitud() ?>">
                                                 <button type="submit" class="btn btn-dark">Ver detalles</button>
                                             </form>
                                         </section>

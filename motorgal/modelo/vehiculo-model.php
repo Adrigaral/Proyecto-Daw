@@ -399,7 +399,7 @@ class VehiculoModel
             JOIN inscribe i ON i.id_evento = e.id_evento
             WHERE v.id_vehiculo = ?
               AND i.id_usuario = ?
-              AND e.estado_evento = 'ACTIVO'";
+              AND (e.estado_evento = 'ACTIVO' OR e.estado_evento = 'EN PROGRESO') LIMIT 1";
 
         try {
             $statement = $pdo->prepare($sql);

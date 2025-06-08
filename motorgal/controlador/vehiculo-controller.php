@@ -92,7 +92,7 @@ class VehiculoController extends Controller
         if (!$id_vehiculo) {
             $error = 'Vehículo no válido.';
         } elseif (VehiculoModel::vehiculoRelacionadoConEvento($id_vehiculo, $id_usuario)) {
-            $error = 'No puedes eliminar este vehículo porque está relacionado con un evento activo.';
+            $error = 'No puedes eliminar este vehículo porque está relacionado con un evento activo. Mínimo un vehículo relacionado con la marca.';
         }
 
         if (!empty($error ?? '')) {
@@ -178,7 +178,7 @@ class VehiculoController extends Controller
 
         if ($vehiculoActual && VehiculoModel::vehiculoRelacionadoConEvento($id_vehiculo, $id_usuario)) {
             if ($vehiculoActual->getMarca() !== $marca) {
-                $error .= 'No puedes modificar la marca de este vehículo porque está relacionada con un evento activo.<br>';
+                $error .= 'No puedes modificar la marca de este vehículo porque está relacionada con un evento activo. Mínimo un vehículo con esta marca.<br>';
             }
         }
 

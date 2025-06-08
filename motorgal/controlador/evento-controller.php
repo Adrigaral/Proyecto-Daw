@@ -18,78 +18,153 @@ class EventoController extends Controller
     }
 
     public function lista_eventos_activos()
-{
-    session_start();
-    $modelo = $_GET['modelo'] ?? null;
-    $lugar = $_GET['lugar'] ?? null;
+    {
+        session_start();
+        $modelo = $_GET['modelo'] ?? null;
+        $lugar = $_GET['lugar'] ?? null;
 
-    // Paginación
-    $pagina_actual = isset($_GET['pagina']) ? (int)$_GET['pagina'] : 1;
-    $limite = 6; // Número de eventos por página
-    $offset = ($pagina_actual - 1) * $limite;
+        // Paginación
+        $pagina_actual = isset($_GET['pagina']) ? (int)$_GET['pagina'] : 1;
+        $limite = 6; // Número de eventos por página
+        $offset = ($pagina_actual - 1) * $limite;
 
-    EventoModel::actualizar_estados_automaticamente();
+        EventoModel::actualizar_estados_automaticamente();
 
-    // Obtiene los modelos disponibles para el filtro
-    $modelos = VehiculoModel::getMarca();
+        // Obtiene los modelos disponibles para el filtro
+        $modelos = VehiculoModel::getMarca();
 
-    // Obtiene el total de eventos (sin paginar)
-    $total_eventos = EventoModel::contarEventosFiltrados($modelo, $lugar);
-    $total_paginas = ceil($total_eventos / $limite);
+        // Obtiene el total de eventos (sin paginar)
+        $total_eventos = EventoModel::contarEventosFiltrados($modelo, $lugar);
+        $total_paginas = ceil($total_eventos / $limite);
 
-    // Obtiene los eventos filtrados con límite y offset
-    $eventos = EventoModel::filtrarEventos($modelo, $lugar, $limite, $offset);
+        // Obtiene los eventos filtrados con límite y offset
+        $eventos = EventoModel::filtrarEventos($modelo, $lugar, $limite, $offset);
 
-    // Obtiene el último evento activo
-    $ultimo_evento_activo = EventoModel::get_ultimo_evento_activo();
+        // Obtiene el último evento activo
+        $ultimo_evento_activo = EventoModel::get_ultimo_evento_activo();
 
-    $id_usuario = $_SESSION['id_usuario'] ?? null;
-    $eventos_con_estado = [];
+        $id_usuario = $_SESSION['id_usuario'] ?? null;
+        $eventos_con_estado = [];
 
-    foreach ($eventos as $evento) {
-        $inscrito = false;
-        if ($id_usuario) {
-            $inscrito = InscribeModel::estaInscrito($id_usuario, $evento->getId_evento());
+        foreach ($eventos as $evento) {
+            $inscrito = false;
+            if ($id_usuario) {
+                $inscrito = InscribeModel::estaInscrito($id_usuario, $evento->getId_evento());
+            }
+            $eventos_con_estado[] = [
+                'evento' => $evento,
+                'inscrito' => $inscrito
+            ];
         }
-        $eventos_con_estado[] = [
-            'evento' => $evento,
-            'inscrito' => $inscrito
-        ];
+
+        $this->vista->show('lista-eventos', [
+            'eventos' => $eventos_con_estado,
+            'modelo' => $modelo,
+            'lugar' => $lugar,
+            'modelos' => $modelos,
+            'ultimo_evento_activo' => $ultimo_evento_activo,
+            'pagina_actual' => $pagina_actual,
+            'total_paginas' => $total_paginas
+        ]);
     }
 
-    $this->vista->show('lista-eventos', [
-        'eventos' => $eventos_con_estado,
-        'modelo' => $modelo,
-        'lugar' => $lugar,
-        'modelos' => $modelos,
-        'ultimo_evento_activo' => $ultimo_evento_activo,
-        'pagina_actual' => $pagina_actual,
-        'total_paginas' => $total_paginas
-    ]);
-}
+    public function lista_eventos_creados()
+    {
+        session_start();
+        $id_usuario = $_SESSION['id_usuario'];
+        $lugar = $_GET['lugar'] ?? null;
+        $estado = $_GET['estado'] ?? null;
+        $requisitoSelect = $_GET['requisitos'] ?? null; // Usa el mismo nombre que en el formulario
+
+        $pagina = isset($_GET['pagina']) ? max(1, (int)$_GET['pagina']) : 1;
+        $limite = 6;
+        $offset = ($pagina - 1) * $limite;
+
+        // Ajustamos el orden de los parámetros
+        $eventos = EventoModel::filtrarEventosCreados($id_usuario, $requisitoSelect, $lugar, $estado, $limite, $offset);
+        $total_eventos = EventoModel::contarEventosCreados($id_usuario, $requisitoSelect, $lugar, $estado);
+        $total_paginas = ceil($total_eventos / $limite);
+
+        $requisitos = VehiculoModel::getMarca();
+
+        $data = [
+            'eventos' => $eventos,
+            'requisitos' => $requisitos,
+            'lugar' => $lugar,
+            'estado' => $estado,
+            'requisito' => $requisitoSelect,
+            'pagina_actual' => $pagina,
+            'total_paginas' => $total_paginas
+        ];
+
+        $this->vista->show('lista-eventos-organizador', $data);
+    }
+
+    public function listarEventosUsuario()
+    {
+        session_start();
+        $id_usuario = $_SESSION['id_usuario'];
+        $lugar = $_GET['lugar'] ?? null;
+        $estado = $_GET['estado'] ?? null;
+        $requisitoSelect = $_GET['requisitos'] ?? null; // Usa el mismo nombre que en el formulario
+
+        $pagina = isset($_GET['pagina']) ? max(1, (int)$_GET['pagina']) : 1;
+        $limite = 6;
+        $offset = ($pagina - 1) * $limite;
+
+        // Ajustamos el orden de los parámetros
+        $eventos = EventoModel::filtrarEventosUsuario($id_usuario, $requisitoSelect, $lugar, $estado, $limite, $offset);
+        $total_eventos = EventoModel::contarEventosUsuario($id_usuario, $requisitoSelect, $lugar, $estado);
+        $total_paginas = ceil($total_eventos / $limite);
+
+        $requisitos = VehiculoModel::getMarca();
+
+        $data = [
+            'eventos' => $eventos,
+            'requisitos' => $requisitos,
+            'lugar' => $lugar,
+            'estado' => $estado,
+            'requisito' => $requisitoSelect,
+            'pagina_actual' => $pagina,
+            'total_paginas' => $total_paginas
+        ];
+
+        $this->vista->show('lista-eventos-usuario', $data);
+    }
 
 
     public function ver_evento()
     {
         session_start();
+
         $id_evento = $_GET['id'] ?? null;
+        $matricula = $_GET['matricula'] ?? null;
+        $limite = 6;
+        $pagina = isset($_GET['pagina']) ? (int) $_GET['pagina'] : 1;
+        $offset = ($pagina - 1) * $limite;
 
         EventoModel::actualizar_estados_automaticamente();
+        $creador = EventoModel::obtenerCreadorEvento($id_evento);
+        $inscrito = InscribeModel::estaInscrito($_SESSION['id_usuario'], $id_evento);
 
         if ($id_evento) {
             $evento = EventoModel::get_evento((int)$id_evento);
+            $inscritos = EventoModel::getInscritosEvento((int)$id_evento, $limite, $offset, $matricula);
+            $totalInscritos = EventoModel::contarInscritosEvento($id_evento);
+
+            // Calcular total de páginas
+            $total_paginas = (int) ceil($totalInscritos / $limite);
 
             if ($evento) {
-                $id_usuario = $_SESSION['id_usuario'] ?? null;
-                $inscrito = false;
-
-                if ($id_usuario) {
-                    $inscrito = InscribeModel::estaInscrito($id_usuario, $evento->getId_evento());
-                }
-
                 $this->vista->show('detalle-evento', [
                     'evento' => $evento,
-                    'inscrito' => $inscrito
+                    'creador' => $creador,
+                    'inscrito' => $inscrito,
+                    'inscritos' => $inscritos,
+                    'totalInscritos' => $totalInscritos,
+                    'pagina_actual' => $pagina,
+                    'total_paginas' => $total_paginas,
+                    'matricula' => $matricula
                 ]);
             } else {
                 header("Location: index.php?controller=EventoController&action=lista_eventos_activos");
@@ -100,7 +175,6 @@ class EventoController extends Controller
             exit;
         }
     }
-
 
     public function lista_eventos()
     {
@@ -120,7 +194,10 @@ class EventoController extends Controller
 
     public function crear_evento()
     {
+        session_start();
         $error = '';
+
+        $data['requisitos'] = VehiculoModel::getMarca();
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $id_usuario = $_SESSION['id_usuario'] ?? null;
@@ -129,28 +206,62 @@ class EventoController extends Controller
             $fecha_inicio_evento = $_POST['fecha_inicio_evento'] ?? '';
             $fecha_fin_evento = $_POST['fecha_fin_evento'] ?? '';
             $limite_plazas = (int)($_POST['limite_plazas'] ?? 0);
-            $requisitos = $_POST['requisitos'] ?? '';
+            $requisito_seleccionado  = $_POST['requisitos'] ?? '';
             $lugar = trim($_POST['lugar'] ?? '');
             $precio = (float)($_POST['precio'] ?? 0);
-            $foto_evento = trim($_POST['foto_evento'] ?? '');
+            $latitud = isset($_POST['latitud']) ? (float)$_POST['latitud'] : null;
+            $longitud = isset($_POST['longitud']) ? (float)$_POST['longitud'] : null;
+            $foto_evento = '';
+            $data['requisitos'] = $requisito_seleccionado;
 
-            if (!$id_usuario || !$titulo || !$descripcion || !$fecha_inicio_evento || !$fecha_fin_evento || !$lugar || !$precio || !$foto_evento) {
-                $error .= "Todos los campos obligatorios deben ser completados.";
+            // Validación básica
+            if (!$id_usuario || !$titulo || !$descripcion || !$fecha_inicio_evento || !$fecha_fin_evento || !$lugar || !is_numeric($precio) || !is_numeric($latitud) || !is_numeric($longitud)) {
+                $error .= "Todos los campos obligatorios deben ser completados.</br>";
             }
 
+            // Validación de fechas
             if (empty($error)) {
                 try {
                     $fecha_inicio = new DateTime($fecha_inicio_evento);
                     $fecha_fin = new DateTime($fecha_fin_evento);
 
                     if ($fecha_fin < $fecha_inicio) {
-                        $error .= "La fecha de fin no puede ser anterior a la de inicio.";
+                        $error .= "La fecha de fin no puede ser anterior a la de inicio.</br>";
                     }
-                } catch (Exception $e) {
-                    $error .= "Formato de fecha inválido.";
+                } catch (Exception) {
+                    $error .= "Formato de fecha inválido.</br>";
                 }
             }
 
+            if ($precio < 0) {
+                $error .= "El precio no puede ser negativo.<br>";
+            }
+
+            // Procesar imagen
+            $ext = strtolower(pathinfo($_FILES['foto_evento']['name'], PATHINFO_EXTENSION));
+            $permitidas = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+
+            if (in_array($ext, $permitidas)) {
+                $nombreArchivo = uniqid('evento_') . '.' . $ext;
+                $rutaSubida = realpath(__DIR__ . '/../img/uploads');
+
+                if ($rutaSubida && is_dir($rutaSubida) && is_writable($rutaSubida)) {
+                    $destino = $rutaSubida . '/' . $nombreArchivo;
+
+                    if (move_uploaded_file($_FILES['foto_evento']['tmp_name'], $destino)) {
+                        $foto_evento = $nombreArchivo;
+                    } else {
+                        $error .= "Error al mover la imagen subida.<br>";
+                    }
+                } else {
+                    $error .= "El directorio de subida no existe o no tiene permisos de escritura.<br>";
+                }
+            } else {
+                $error .= "Formato de imagen no permitido.<br>";
+            }
+
+
+            // Guardar evento si todo es correcto
             if (empty($error)) {
                 $evento = new Evento(
                     $id_usuario,
@@ -160,16 +271,18 @@ class EventoController extends Controller
                     $fecha_fin,
                     'ACTIVO',
                     $limite_plazas,
-                    $requisitos,
+                    $requisito_seleccionado,
                     $lugar,
                     $precio,
-                    $foto_evento
+                    $foto_evento,
+                    $latitud,
+                    $longitud
                 );
 
                 $creado = EventoModel::crearEvento($evento);
                 if ($creado) {
                     $_SESSION['mensaje'] = "Evento creado correctamente.";
-                    $this->vista->show('perfil-usuario');
+                    $this->vista->show('formulario-crear-evento');
                     return;
                 } else {
                     $error .= "Error al crear el evento.";
@@ -177,74 +290,105 @@ class EventoController extends Controller
             }
         }
 
-        $data = [];
+        // Mostrar errores si los hay
         if (!empty($error)) {
             $data['errores'] = $error;
         }
         $this->vista->show('formulario-crear-evento', $data);
     }
 
+
     public function modificar_evento()
     {
-        $id_evento = $_GET['id_evento'] ?? null;
-        $error = '';
+        session_start();
+        $id_evento = $_GET['id'] ?? null;
         $data = [];
+        $error = '';
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $titulo = $_POST['titulo'] ?? '';
-            $descripcion = $_POST['descripcion'] ?? '';
-            $fecha_inicio_evento = $_POST['fecha_inicio_evento'] ?? '';
-            $fecha_fin_evento = $_POST['fecha_fin_evento'] ?? '';
-            $lugar = $_POST['lugar'] ?? '';
+            $titulo = trim($_POST['titulo'] ?? '');
+            $descripcion = trim($_POST['descripcion'] ?? '');
+            $fechaInicio = trim($_POST['fecha_inicio_evento'] ?? '');
+            $fechaFin = trim($_POST['fecha_fin_evento'] ?? '');
+            $lugar = trim($_POST['lugar'] ?? '');
+            $limitePlazas = ($_POST['limite_plazas'] !== '') ? (int)$_POST['limite_plazas'] : null;
+            $requisitos = $_POST['requisitos'] ?? null;
             $precio = (float)($_POST['precio'] ?? 0);
-            $foto_evento = trim($_POST['foto_evento'] ?? '');
+            $latitud = isset($_POST['latitud']) ? (float)$_POST['latitud'] : null;
+            $longitud = isset($_POST['longitud']) ? (float)$_POST['longitud'] : null;
+            $foto_evento = $_POST['foto_evento_actual'] ?? null;
 
-            if (empty($titulo) || empty($descripcion) || empty($fecha_inicio_evento) || empty($fecha_fin_evento) || empty($lugar) || empty($precio) || empty($foto_evento)) {
-                $error .= "Todos los campos son obligatorios.";
+            if (!empty($_FILES['foto_evento']['name'])) {
+                $nombreTmp = $_FILES['foto_evento']['tmp_name'];
+                $nombreOri = basename($_FILES['foto_evento']['name']);
+                $destino   = "../img/uploads/" . time() . '_' . $nombreOri;
+
+                if (move_uploaded_file($nombreTmp, $destino)) {
+                    $foto_evento = time() . '_' . $nombreOri;
+                } else {
+                    $error .= " No se pudo subir la nueva imagen. ";
+                }
+            }
+
+
+            if (
+                $titulo === '' || $descripcion === '' || $fechaInicio === '' || $fechaFin === '' ||
+                $lugar === ''  || $precio <= 0   || $latitud === null || $longitud === null
+            ) {
+                $error .= "Todos los campos obligatorios deben estar completos. ";
             }
 
             if (empty($error)) {
                 try {
-                    $fecha_inicio_dt = new DateTime($fecha_inicio_evento);
-                    $fecha_fin_dt = new DateTime($fecha_fin_evento);
+                    $dtInicio = new DateTime($fechaInicio);
+                    $dtFin = new DateTime($fechaFin);
                 } catch (Exception $e) {
-                    $error .= "Formato de fecha inválido.";
+                    $error .= "Formato de fecha inválido. ";
                 }
             }
 
             if (empty($error)) {
-                $modificado = EventoModel::actualizar_evento(
-                    $id_evento,
+                $ok = EventoModel::actualizar_evento(
+                    (int)$id_evento,
+                    $dtInicio,
+                    $dtFin,
+                    $lugar,
                     $titulo,
                     $descripcion,
-                    $fecha_inicio_dt,
-                    $fecha_fin_dt,
-                    $lugar,
+                    $limitePlazas,
+                    $requisitos,
                     $precio,
-                    $foto_evento
+                    $foto_evento,
+                    $latitud,
+                    $longitud
                 );
 
-                if ($modificado) {
+                if ($ok) {
                     $_SESSION['mensaje'] = "Evento actualizado correctamente.";
-                    $this->vista->show('lista-eventos');
-                    return;
+                    header("Location: index.php?controller=EventoController&action=lista_eventos_creados");
+                    exit;
                 } else {
-                    $error .= "Error al actualizar el evento.";
+                    $error .= "No se pudo actualizar. ";
                 }
             }
 
-            if (!empty($error)) {
-                $data['errores'] = $error;
+            if ($error !== '') {
+                $_SESSION['errores'] = $error;
+                header("Location: index.php?controller=EventoController&action=modificar_evento&id=" . urlencode($id_evento));
+                exit;
             }
         }
 
-        if ($id_evento && $_SERVER['REQUEST_METHOD'] === 'GET') {
+        if ($_SERVER['REQUEST_METHOD'] === 'GET' && $id_evento) {
             $evento = EventoModel::get_evento($id_evento);
+
             if ($evento) {
                 $data['evento'] = $evento;
-            } else {
-                $data['errores'] = "Evento no encontrado.";
+                $data['requisitos'] = VehiculoModel::getMarca();
+                $this->vista->show('formulario-modificar-evento', $data);
+                return;
             }
+            $_SESSION['errores'] = "Evento no encontrado.";
         }
 
         $this->vista->show('formulario-modificar-evento', $data);
@@ -278,27 +422,28 @@ class EventoController extends Controller
 
     public function eliminar_evento()
     {
-        $id_evento = $_POST['id_evento'] ?? null;
+        session_start();
+        $id_evento = $_GET['id'] ?? null;
         $error = '';
 
         if (!$id_evento) {
-            $error = "Falta el ID del evento.";
+            $error .= "Falta el ID del evento.";
         }
 
         if (empty($error)) {
-            $resultado = EventoModel::eliminar_o_cancelar_evento((int)$id_evento);
+            $resultado = EventoModel::eliminar_o_cancelar_evento($id_evento);
             if ($resultado) {
-                $_SESSION['mensaje'] = "Evento eliminado o cancelado correctamente.";
+                $_SESSION['mensaje'] = "Evento eliminado o cancelado correctamente. Ten en cuenta que si el evento cuenta con inscripciones, el evento no se elimina pero sí se cancela.";
             } else {
-                $error = "No se pudo eliminar o cancelar el evento.";
+                $error .= "No se pudo eliminar o cancelar el evento.";
             }
         }
 
-        $data = [];
         if (!empty($error)) {
-            $data['errores'] = $error;
+            $_SESSION['errores'] = $error;
         }
 
-        $this->vista->show('lista-eventos', $data);
+        header("Location: index.php?controller=EventoController&action=lista_eventos_creados");
+        exit;
     }
 }

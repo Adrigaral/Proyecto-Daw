@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: mariadb:3306
--- Tiempo de generación: 01-06-2025 a las 21:49:04
+-- Tiempo de generación: 08-06-2025 a las 21:41:13
 -- Versión del servidor: 10.6.19-MariaDB
 -- Versión de PHP: 8.2.24
 
@@ -38,22 +38,25 @@ CREATE TABLE IF NOT EXISTS `eventos` (
   `fecha_fin_evento` datetime NOT NULL,
   `estado_evento` varchar(20) DEFAULT NULL,
   `limite_plazas` int(11) DEFAULT NULL,
-  `requisitos` text DEFAULT NULL,
+  `requisitos` varchar(30) DEFAULT NULL,
   `lugar` varchar(100) DEFAULT NULL,
   `precio` decimal(10,2) NOT NULL,
   `foto_evento` varchar(255) NOT NULL,
+  `latitud` decimal(10,8) DEFAULT NULL,
+  `longitud` decimal(11,8) DEFAULT NULL,
   PRIMARY KEY (`id_evento`),
   KEY `id_usuario` (`id_usuario`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `eventos`
 --
 
-INSERT INTO `eventos` (`id_evento`, `id_usuario`, `titulo`, `descripcion`, `fecha_inicio_evento`, `fecha_fin_evento`, `estado_evento`, `limite_plazas`, `requisitos`, `lugar`, `precio`, `foto_evento`) VALUES
-(1, 4, 'Exhibición Volvo', 'Exhibe tu vehículo Volvo en Lugo en la Av. de Grant Sphere', '2025-06-01 10:55:00', '2025-06-01 11:00:00', 'ACTIVO', 50, 'Volvo', 'Lugo', 0.00, 'volvo.jpg'),
-(2, 4, 'Concentración de vehículos Porsche', 'Acércate para que admiremos todos tu máquina Porsche que tan enamorado te tiene.', '2025-06-06 09:00:00', '2025-06-06 22:30:00', 'ACTIVO', 30, 'Porsche', 'A Coruña', 10.00, 'Porsche.jpg'),
-(3, 4, 'Gran Premio de Competición BMW', 'Se celebrará en Santiago de Compostela en el circuíto de Vilas un gran premio para ver cual BMW se supera más y hace un mejor tiempo. Y sabéis que dá igual la máquina mientras haya conductor.', '2025-06-09 10:00:00', '2025-06-10 22:30:00', 'ACTIVO', 30, 'Bmw', 'Santiago de Compostela', 15.00, 'BMW.webp');
+INSERT INTO `eventos` (`id_evento`, `id_usuario`, `titulo`, `descripcion`, `fecha_inicio_evento`, `fecha_fin_evento`, `estado_evento`, `limite_plazas`, `requisitos`, `lugar`, `precio`, `foto_evento`, `latitud`, `longitud`) VALUES
+(1, 4, 'Exhibición Volvo', 'Exhibe tu vehículo Volvo en Lugo en la Av. de Grant Sphere', '2025-06-01 10:55:00', '2025-06-01 11:00:00', 'FINALIZADO', 50, 'Volvo', 'Lugo', 0.00, 'volvo.jpg', NULL, NULL),
+(2, 4, 'Concentración de vehículos Porsche', 'Acércate para que admiremos todos tu máquina Porsche que tan enamorado te tiene.', '2025-06-06 09:00:00', '2025-06-06 22:30:00', 'CANCELADO', 30, 'Porsche', 'A Coruña', 10.00, 'Porsche.jpg', NULL, NULL),
+(3, 4, 'Gran Premio de Competición BMW', 'Se celebrará en Santiago de Compostela en el circuíto de Vilas un gran premio para ver cual BMW se supera más y hace un mejor tiempo. Y sabéis que dá igual la máquina mientras haya conductor.', '2025-06-09 10:00:00', '2025-06-10 22:30:00', 'ACTIVO', 30, 'Bmw', 'Santiago de Compostela', 15.00, 'BMW.webp', 42.59768300, NULL),
+(4, 4, 'Manifestación de vehículos Porsche', 'Venid a mostrarnos a todos vuestras máquinas Porsche más preciadas en Santiago de Compostela, en el aparcamiento de la Ciudad de la Cultura. El más bonito recibirá un premio, y además habrá más sorpresas que desvelaremos en el evento. ¡Nos vemos allí amigos!', '2025-06-07 10:00:00', '2025-06-08 22:30:00', 'ACTIVO', 30, 'Porsche', 'Santiago de Compostela', 0.00, 'evento_683f425a74600.jpg', 42.86308100, -8.50341800);
 
 -- --------------------------------------------------------
 
@@ -74,7 +77,10 @@ CREATE TABLE IF NOT EXISTS `inscribe` (
 --
 
 INSERT INTO `inscribe` (`id_usuario`, `id_evento`, `fecha_inscripcion`) VALUES
-(5, 1, '2025-05-30 23:15:12');
+(5, 1, '2025-05-30 23:15:12'),
+(5, 2, '2025-06-05 17:39:19'),
+(5, 3, '2025-06-02 21:19:18'),
+(6, 2, '2025-06-05 19:40:20');
 
 -- --------------------------------------------------------
 
@@ -95,7 +101,7 @@ CREATE TABLE IF NOT EXISTS `usuarios` (
   PRIMARY KEY (`id_usuario`),
   UNIQUE KEY `dni` (`dni`),
   UNIQUE KEY `correo_electronico` (`correo_electronico`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `usuarios`
@@ -104,7 +110,8 @@ CREATE TABLE IF NOT EXISTS `usuarios` (
 INSERT INTO `usuarios` (`id_usuario`, `dni`, `nombre`, `correo_electronico`, `username`, `contrasinal`, `tipo_usuario`, `estado_usuario`, `foto_perfil`) VALUES
 (1, '12345678Z', 'Adrián García', 'adrian@example.com', 'adriangarcia', '2ac753375c8e9e6675b3e8f3c63fd53aea3d4a64', 'PREMIUM', 'ACTIVO', '../img/Porsche.jpg'),
 (4, '13895654C', 'Candela Mundiña Muiños', 'cande@gmail.com', 'caandelam', 'e665f4d3e9ce97415665f498749cdee4a7ab449c', 'PREMIUM', 'ACTIVO', '../img/Porsche.jpg'),
-(5, '54226670F', 'Adrián García Álvarez', 'adrian@gmail.com', 'alsonder', '9627956c5f4b00eec8b129e114ea46f60e134a70', 'NORMAL', 'ACTIVO', '../img/Porsche.jpg');
+(5, '54226670F', 'Adrián García Álvarez', 'adrian@gmail.com', 'alsonder', '9627956c5f4b00eec8b129e114ea46f60e134a70', 'NORMAL', 'ACTIVO', '../img/Porsche.jpg'),
+(6, '19843914C', 'Pedro Vázquez', 'pedrovazquez@gmail.com', 'pedrovazquez', '97afe14706199c2a34cec1a3e7d2c0dfcc5c58c1', 'NORMAL', 'ACTIVO', '../img/Porsche.jpg');
 
 -- --------------------------------------------------------
 
@@ -122,15 +129,17 @@ CREATE TABLE IF NOT EXISTS `vehiculos` (
   PRIMARY KEY (`id_vehiculo`),
   UNIQUE KEY `matricula` (`matricula`),
   KEY `id_usuario` (`id_usuario`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `vehiculos`
 --
 
 INSERT INTO `vehiculos` (`id_vehiculo`, `id_usuario`, `matricula`, `marca`, `modelo`, `anio`) VALUES
-(2, 5, '8394MRN', 'Volvo', 'XC60', 2024),
-(4, 5, '4564GWF', 'Volkswagen', 'TDI', 2008);
+(8, 5, '3655FTR', 'Porsche', '911 Carrera', 2017),
+(10, 5, '6344RLR', 'Bmw', 'M3 Competition', 2024),
+(12, 5, '6244DUV', 'Bmw', 'M2', 2007),
+(13, 6, '8699WEE', 'Porsche', 'Cayman S', 2016);
 
 --
 -- Restricciones para tablas volcadas
