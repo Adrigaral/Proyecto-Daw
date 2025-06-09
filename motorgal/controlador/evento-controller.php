@@ -19,9 +19,9 @@ class EventoController extends Controller
 
     public function lista_eventos_activos()
     {
-        session_start();
         $modelo = $_GET['modelo'] ?? null;
         $lugar = $_GET['lugar'] ?? null;
+        $id_usuario = $_SESSION['id_usuario'] ?? null;
 
         // Paginación
         $pagina_actual = isset($_GET['pagina']) ? (int)$_GET['pagina'] : 1;
@@ -34,16 +34,15 @@ class EventoController extends Controller
         $modelos = VehiculoModel::getMarca();
 
         // Obtiene el total de eventos (sin paginar)
-        $total_eventos = EventoModel::contarEventosFiltrados($modelo, $lugar);
+        $total_eventos = EventoModel::contarEventosFiltrados($id_usuario, $modelo, $lugar);
         $total_paginas = ceil($total_eventos / $limite);
 
         // Obtiene los eventos filtrados con límite y offset
-        $eventos = EventoModel::filtrarEventos($modelo, $lugar, $limite, $offset);
+        $eventos = EventoModel::filtrarEventos($id_usuario, $modelo, $lugar, $limite, $offset);
 
         // Obtiene el último evento activo
-        $ultimo_evento_activo = EventoModel::get_ultimo_evento_activo();
+        $ultimo_evento_activo = EventoModel::get_ultimo_evento_activo($id_usuario);
 
-        $id_usuario = $_SESSION['id_usuario'] ?? null;
         $eventos_con_estado = [];
 
         foreach ($eventos as $evento) {
@@ -74,13 +73,13 @@ class EventoController extends Controller
         $id_usuario = $_SESSION['id_usuario'];
         $lugar = $_GET['lugar'] ?? null;
         $estado = $_GET['estado'] ?? null;
-        $requisitoSelect = $_GET['requisitos'] ?? null; // Usa el mismo nombre que en el formulario
+        $requisitoSelect = $_GET['requisitos'] ?? null;
 
         $pagina = isset($_GET['pagina']) ? max(1, (int)$_GET['pagina']) : 1;
         $limite = 6;
         $offset = ($pagina - 1) * $limite;
 
-        // Ajustamos el orden de los parámetros
+        EventoModel::actualizar_estados_automaticamente();
         $eventos = EventoModel::filtrarEventosCreados($id_usuario, $requisitoSelect, $lugar, $estado, $limite, $offset);
         $total_eventos = EventoModel::contarEventosCreados($id_usuario, $requisitoSelect, $lugar, $estado);
         $total_paginas = ceil($total_eventos / $limite);
@@ -106,13 +105,13 @@ class EventoController extends Controller
         $id_usuario = $_SESSION['id_usuario'];
         $lugar = $_GET['lugar'] ?? null;
         $estado = $_GET['estado'] ?? null;
-        $requisitoSelect = $_GET['requisitos'] ?? null; // Usa el mismo nombre que en el formulario
+        $requisitoSelect = $_GET['requisitos'] ?? null;
 
         $pagina = isset($_GET['pagina']) ? max(1, (int)$_GET['pagina']) : 1;
         $limite = 6;
         $offset = ($pagina - 1) * $limite;
 
-        // Ajustamos el orden de los parámetros
+        EventoModel::actualizar_estados_automaticamente();
         $eventos = EventoModel::filtrarEventosUsuario($id_usuario, $requisitoSelect, $lugar, $estado, $limite, $offset);
         $total_eventos = EventoModel::contarEventosUsuario($id_usuario, $requisitoSelect, $lugar, $estado);
         $total_paginas = ceil($total_eventos / $limite);
@@ -214,12 +213,10 @@ class EventoController extends Controller
             $foto_evento = '';
             $data['requisitos'] = $requisito_seleccionado;
 
-            // Validación básica
             if (!$id_usuario || !$titulo || !$descripcion || !$fecha_inicio_evento || !$fecha_fin_evento || !$lugar || !is_numeric($precio) || !is_numeric($latitud) || !is_numeric($longitud)) {
                 $error .= "Todos los campos obligatorios deben ser completados.</br>";
             }
 
-            // Validación de fechas
             if (empty($error)) {
                 try {
                     $fecha_inicio = new DateTime($fecha_inicio_evento);
@@ -237,7 +234,6 @@ class EventoController extends Controller
                 $error .= "El precio no puede ser negativo.<br>";
             }
 
-            // Procesar imagen
             $ext = strtolower(pathinfo($_FILES['foto_evento']['name'], PATHINFO_EXTENSION));
             $permitidas = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
 
@@ -260,8 +256,6 @@ class EventoController extends Controller
                 $error .= "Formato de imagen no permitido.<br>";
             }
 
-
-            // Guardar evento si todo es correcto
             if (empty($error)) {
                 $evento = new Evento(
                     $id_usuario,
@@ -282,7 +276,7 @@ class EventoController extends Controller
                 $creado = EventoModel::crearEvento($evento);
                 if ($creado) {
                     $_SESSION['mensaje'] = "Evento creado correctamente.";
-                    $this->vista->show('formulario-crear-evento');
+                    $this->vista->show('lista-eventos-organizador');
                     return;
                 } else {
                     $error .= "Error al crear el evento.";
@@ -290,7 +284,6 @@ class EventoController extends Controller
             }
         }
 
-        // Mostrar errores si los hay
         if (!empty($error)) {
             $data['errores'] = $error;
         }
@@ -301,49 +294,74 @@ class EventoController extends Controller
     public function modificar_evento()
     {
         session_start();
-        $id_evento = $_GET['id'] ?? null;
-        $data = [];
-        $error = '';
+
+        $id_evento = $_GET['id'] ?? $_POST['id_evento'] ?? null;
+        $error     = '';
+        $data      = [];
+
+        EventoModel::actualizar_estados_automaticamente();
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $titulo = trim($_POST['titulo'] ?? '');
-            $descripcion = trim($_POST['descripcion'] ?? '');
-            $fechaInicio = trim($_POST['fecha_inicio_evento'] ?? '');
-            $fechaFin = trim($_POST['fecha_fin_evento'] ?? '');
-            $lugar = trim($_POST['lugar'] ?? '');
-            $limitePlazas = ($_POST['limite_plazas'] !== '') ? (int)$_POST['limite_plazas'] : null;
-            $requisitos = $_POST['requisitos'] ?? null;
-            $precio = (float)($_POST['precio'] ?? 0);
-            $latitud = isset($_POST['latitud']) ? (float)$_POST['latitud'] : null;
-            $longitud = isset($_POST['longitud']) ? (float)$_POST['longitud'] : null;
+            $titulo        = trim($_POST['titulo']        ?? '');
+            $descripcion   = trim($_POST['descripcion']   ?? '');
+            $fechaInicio   = trim($_POST['fecha_inicio_evento'] ?? '');
+            $fechaFin      = trim($_POST['fecha_fin_evento']    ?? '');
+            $lugar         = trim($_POST['lugar']         ?? '');
+            $limitePlazas  = ($_POST['limite_plazas'] !== '') ? (int)$_POST['limite_plazas'] : null;
+            $requisitos    = $_POST['requisitos'] ?? null;
+            $precio        = (float)($_POST['precio']     ?? 0);
+            $latitud       = isset($_POST['latitud'])  ? (float)$_POST['latitud']  : null;
+            $longitud      = isset($_POST['longitud']) ? (float)$_POST['longitud'] : null;
+
             $foto_evento = $_POST['foto_evento_actual'] ?? null;
 
             if (!empty($_FILES['foto_evento']['name'])) {
-                $nombreTmp = $_FILES['foto_evento']['tmp_name'];
-                $nombreOri = basename($_FILES['foto_evento']['name']);
-                $destino   = "../img/uploads/" . time() . '_' . $nombreOri;
+                $extPermitidas = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+                $ext = strtolower(pathinfo($_FILES['foto_evento']['name'], PATHINFO_EXTENSION));
 
-                if (move_uploaded_file($nombreTmp, $destino)) {
-                    $foto_evento = time() . '_' . $nombreOri;
+                if (!in_array($ext, $extPermitidas)) {
+                    $error .= "Formato de imagen no permitido.<br>";
                 } else {
-                    $error .= " No se pudo subir la nueva imagen. ";
+                    $nombreArchivo = uniqid('evento_') . '.' . $ext;
+                    $rutaSubida    = realpath(__DIR__ . '/../img/uploads');
+
+                    if ($rutaSubida && is_dir($rutaSubida) && is_writable($rutaSubida)) {
+                        $destino = $rutaSubida . '/' . $nombreArchivo;
+
+                        if (move_uploaded_file($_FILES['foto_evento']['tmp_name'], $destino)) {
+                            $foto_evento = $nombreArchivo;
+                        } else {
+                            $error .= "Error al mover la imagen subida.<br>";
+                        }
+                    } else {
+                        $error .= "El directorio de subida no existe o no tiene permisos de escritura.<br>";
+                    }
                 }
             }
 
-
             if (
-                $titulo === '' || $descripcion === '' || $fechaInicio === '' || $fechaFin === '' ||
-                $lugar === ''  || $precio <= 0   || $latitud === null || $longitud === null
+                !$titulo      || !$descripcion     || !$fechaInicio     || !$fechaFin ||
+                !$lugar       || !is_numeric($precio) || $precio < 0     ||
+                !is_numeric($latitud)  || !is_numeric($longitud)
             ) {
-                $error .= "Todos los campos obligatorios deben estar completos. ";
+                $error .= "Todos los campos obligatorios deben ser completados.<br>";
             }
 
             if (empty($error)) {
                 try {
                     $dtInicio = new DateTime($fechaInicio);
-                    $dtFin = new DateTime($fechaFin);
-                } catch (Exception $e) {
-                    $error .= "Formato de fecha inválido. ";
+                    $dtFin    = new DateTime($fechaFin);
+
+                    if ($dtFin < $dtInicio) {
+                        $error .= "La fecha de fin no puede ser anterior a la de inicio.<br>";
+                    }
+                } catch (Exception) {
+                    $error .= "Formato de fecha inválido.<br>";
+                }
+                $inscritosActuales = EventoModel::contarInscritosEvento($id_evento);
+
+                if ($limitePlazas !== null && $limitePlazas < $inscritosActuales) {
+                    $error .= "No puedes fijar el límite de plazas a {$limitePlazas} porque ya hay {$inscritosActuales} inscritos.<br>";
                 }
             }
 
@@ -367,9 +385,8 @@ class EventoController extends Controller
                     $_SESSION['mensaje'] = "Evento actualizado correctamente.";
                     header("Location: index.php?controller=EventoController&action=lista_eventos_creados");
                     exit;
-                } else {
-                    $error .= "No se pudo actualizar. ";
                 }
+                $error .= "No se pudo actualizar el evento.<br>";
             }
 
             if ($error !== '') {
@@ -380,17 +397,15 @@ class EventoController extends Controller
         }
 
         if ($_SERVER['REQUEST_METHOD'] === 'GET' && $id_evento) {
-            $evento = EventoModel::get_evento($id_evento);
+            $evento = EventoModel::get_evento((int)$id_evento);
 
             if ($evento) {
-                $data['evento'] = $evento;
-                $data['requisitos'] = VehiculoModel::getMarca();
-                $this->vista->show('formulario-modificar-evento', $data);
-                return;
+                $data['evento']      = $evento;
+                $data['requisitos']  = VehiculoModel::getMarca();
+            } else {
+                $_SESSION['errores'] = "Evento no encontrado.";
             }
-            $_SESSION['errores'] = "Evento no encontrado.";
         }
-
         $this->vista->show('formulario-modificar-evento', $data);
     }
 
@@ -425,6 +440,8 @@ class EventoController extends Controller
         session_start();
         $id_evento = $_GET['id'] ?? null;
         $error = '';
+
+        EventoModel::actualizar_estados_automaticamente();
 
         if (!$id_evento) {
             $error .= "Falta el ID del evento.";

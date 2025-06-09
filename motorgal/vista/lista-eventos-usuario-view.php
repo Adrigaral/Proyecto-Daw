@@ -45,33 +45,39 @@
     <main class="flex-fill">
         <article class="container my-5 bg-light border rounded">
             <h1 class="mb-4 mt-4 text-center event-ins">Eventos inscritos</h1>
-            <div class="container filter my-4">
-                <div class="d-flex align-items-center justify-content-center flex-wrap gap-3">
-                    <h2 class="eventos-filter mb-0">Filtrar eventos</h2>
-                    <form method="get" action="index.php" class="d-flex align-items-center gap-2">
+            <div class="container my-4">
+                <div class="bg-light">
+                    <h2 class="eventos-filter text-center mb-3">Filtrar eventos</h2>
+                    <form method="get" action="index.php">
                         <input type="hidden" name="controller" value="EventoController">
                         <input type="hidden" name="action" value="listarEventosUsuario">
-
-                        <input type="text" name="lugar" class="form-control form-control-sm" placeholder="Lugar del evento" value="<?= htmlspecialchars($data['lugar'] ?? '') ?>" style="max-width: 200px;">
-
-                        <select name="estado" class="form-select form-select-sm" style="max-width: 200px;">
-                            <option value="" <?= (!isset($data['estado']) || $data['estado'] === '') ? 'selected' : '' ?>>Todos los estados</option>
-                            <option value="ACTIVO" <?= (isset($data['estado']) && $data['estado'] == 'ACTIVO') ? 'selected' : '' ?>>Activo</option>
-                            <option value="EN PROGRESO" <?= (isset($data['estado']) && $data['estado'] == 'EN PROGRESO') ? 'selected' : '' ?>>En progreso</option>
-                            <option value="FINALIZADO" <?= (isset($data['estado']) && $data['estado'] == 'FINALIZADO') ? 'selected' : '' ?>>Finalizado</option>
-                            <option value="CANCELADO" <?= (isset($data['estado']) && $data['estado'] == 'CANCELADO') ? 'selected' : '' ?>>Cancelado</option>
-                        </select>
-
-                        <select name="requisitos" class="form-select form-select-sm" style="max-width: 200px;">
-                            <option value="">Todas las marcas</option>
-                            <?php foreach ($data['requisitos'] as $r): ?>
-                                <option value="<?= htmlspecialchars($r) ?>" <?= (isset($data['requisito']) && $data['requisito'] == $r) ? 'selected' : '' ?>>
-                                    <?= htmlspecialchars($r) ?>
-                                </option>
-                            <?php endforeach; ?>
-                        </select>
-
-                        <button type="submit" class="buscar btn btn-outline-danger btn-sm d-flex align-items-center">Buscar</button>
+                        <div class="row gy-2">
+                            <div class="col-12 col-md-4">
+                                <input type="text" name="lugar" class="form-control form-control-sm" placeholder="Lugar del evento" value="<?= htmlspecialchars($data['lugar'] ?? '') ?>">
+                            </div>
+                            <div class="col-12 col-md-4">
+                                <select name="estado" class="form-select form-select-sm">
+                                    <option value="" <?= (!isset($data['estado']) || $data['estado'] === '') ? 'selected' : '' ?>>Todos los estados</option>
+                                    <option value="ACTIVO" <?= (isset($data['estado']) && $data['estado'] == 'ACTIVO') ? 'selected' : '' ?>>Activo</option>
+                                    <option value="EN PROGRESO" <?= (isset($data['estado']) && $data['estado'] == 'EN PROGRESO') ? 'selected' : '' ?>>En progreso</option>
+                                    <option value="FINALIZADO" <?= (isset($data['estado']) && $data['estado'] == 'FINALIZADO') ? 'selected' : '' ?>>Finalizado</option>
+                                    <option value="CANCELADO" <?= (isset($data['estado']) && $data['estado'] == 'CANCELADO') ? 'selected' : '' ?>>Cancelado</option>
+                                </select>
+                            </div>
+                            <div class="col-12 col-md-4">
+                                <select name="requisitos" class="form-select form-select-sm">
+                                    <option value="">Todas las marcas</option>
+                                    <?php foreach ($data['requisitos'] as $r): ?>
+                                        <option value="<?= htmlspecialchars($r) ?>" <?= (isset($data['requisito']) && $data['requisito'] == $r) ? 'selected' : '' ?>>
+                                            <?= htmlspecialchars($r) ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                            <div class="col-12 d-flex justify-content-center gap-2 flex-wrap mt-3">
+                                <button type="submit" class="btn btn-sm text-white">Buscar</button>
+                            </div>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -88,8 +94,18 @@
                                         <h5 class="card-title"><?= htmlspecialchars($evento['titulo']) ?></h5>
                                         <p class="card-text"><?= htmlspecialchars($evento['descripcion']) ?></p>
                                         <p><strong>Estado:</strong>
-                                            <span class="badge bg-<?= $evento['estado_evento'] === 'ACTIVO' ? 'success' : 'danger' ?>">
-                                                <?= htmlspecialchars($evento['estado_evento']) ?>
+                                            <?php
+                                            $estado = $evento['estado_evento'];
+                                            $badgeClass = match ($estado) {
+                                                'ACTIVO' => 'success',
+                                                'EN PROGRESO' => 'primary',
+                                                'FINALIZADO' => 'secondary',
+                                                'CANCELADO' => 'danger',
+                                                default => 'dark',
+                                            };
+                                            ?>
+                                            <span class="badge bg-<?= $badgeClass ?>">
+                                                <?= htmlspecialchars($estado) ?>
                                             </span>
                                         </p>
                                         <p><strong>Requisitos:</strong> <?= htmlspecialchars($evento['requisitos']) ?></p>
@@ -100,7 +116,7 @@
                                             <input type="hidden" name="controller" value="EventoController">
                                             <input type="hidden" name="action" value="ver_evento">
                                             <input type="hidden" name="id" value="<?= $evento['id_evento'] ?>">
-                                            <button type="submit" class="btn btn-dark">Ver detalles</button>
+                                            <button type="submit" class="btn text-white">Ver detalles</button>
                                         </form>
                                     </div>
                                 </div>

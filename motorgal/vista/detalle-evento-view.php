@@ -181,6 +181,11 @@
                         <?php else: ?>
                             <p class="text-danger text-center fw-bold">La inscripción ha terminado.</p>
                         <?php endif; ?>
+                        <div class="text-center mt-4">
+                            <a href="index.php?controller=EventoController&action=listarEventosUsuario" class="btn text-white">
+                                Ir a inscripciones
+                            </a>
+                        </div>
                     <?php endif; ?>
 
                     <?php if (isset($_SESSION['mensaje'])): ?>

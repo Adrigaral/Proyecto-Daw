@@ -12,37 +12,43 @@
 
 <body class="d-flex flex-column min-vh-100">
     <!-- Header -->
-    <header class="sticky-top bg-white py-3 px-4 border-bottom">
-        <div class="d-flex justify-content-between align-items-center">
+    <header class="sticky-top bg-white border-bottom">
+        <nav class="navbar navbar-expand-lg navbar-light px-3 py-2">
             <!-- Logo -->
-            <a href="?controller=EventoController&action=lista_eventos_activos" class="d-flex align-items-center me-4">
-                <img src="../img/motorgal.png" alt="Logo de Motorgal" id="logo">
+            <a class="navbar-brand d-flex align-items-center me-3" href="index.php?user">
+                <img src="../img/motorgal.png" alt="Logo de Motorgal" id="logo" height="40">
             </a>
 
-            <!-- Menú principal -->
-            <nav class="flex-grow-1">
-                <ul class="nav justify-content-evenly">
+            <!-- Botón hamburguesa para móviles -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar" aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- Contenido del navbar -->
+            <div class="collapse navbar-collapse" id="mainNavbar">
+                <!-- Menú principal -->
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0 w-100 justify-content-evenly">
                     <li class="nav-item">
-                        <a class="nav-link text-black" href="?controller=EventoController&action=lista_eventos_creados">Mis eventos</a>
+                        <a class="nav-link text-black" href="?controller=EventoController&action=lista_eventos_creados">Mis Eventos</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-black" href="?controller=EventoController&action=lista_eventos_activos">Eventos</a>
                     </li>
-                    <li class="nav-item ">
+                    <li class="nav-item">
                         <a class="nav-link text-black" href="?controller=VehiculoController&action=listarVehiculos">Mis Coches</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-black" href="?controller=EventoController&action=listarEventosUsuario">Inscripciones</a>
                     </li>
                 </ul>
-            </nav>
 
-            <!-- Botones de usuario -->
-            <div class="d-flex align-items-center gap-4">
-                <p class="mb-0 text-primary"><?= $_SESSION['loged'] ?></p>
-                <a href="?controller=UsuarioController&action=logout" class="btn btn-dark">Salir</a>
+                <!-- Usuario y botón salir -->
+                <div class="d-flex align-items-center gap-3 mt-2 mt-lg-0">
+                    <p class="mb-0 text-primary fw-semibold"><?= $_SESSION['loged'] ?></p>
+                    <a href="?controller=UsuarioController&action=logout" class="btn btn-sm text-white">Salir</a>
+                </div>
             </div>
-        </div>
+        </nav>
     </header>
 
     <main class="flex-fill">
@@ -185,13 +191,22 @@
     </main>
 
     <!-- Footer -->
-    <footer class="pt-5 pb-4 px-4 d-flex justify-content-around align-items-center flex-wrap footer">
-
-        <p class="footer-text">Motorgal</p>
-        <p><a href="#" class="footer-link">Aviso Legal</a></p>
-        <p><a href="#" class="footer-link">Política de Privacidad</a></p>
-        <p><a href="#" class="footer-link">Cookies</a></p>
-        <p class="footer-text">Adrián García, 2025</p>
+    <footer class="bg-light pt-4 pb-3 border-top">
+        <div class="container">
+            <div class="row text-center text-md-start align-items-center gy-2">
+                <div class="col-12 col-md">
+                    <p class="mb-0 fw-bold">Motorgal</p>
+                </div>
+                <div class="col-12 col-md-auto">
+                    <a href="#" class="text-decoration-none text-muted me-3">Aviso Legal</a>
+                    <a href="#" class="text-decoration-none text-muted me-3">Política de Privacidad</a>
+                    <a href="#" class="text-decoration-none text-muted">Cookies</a>
+                </div>
+                <div class="col-12 col-md text-md-end">
+                    <p class="mb-0 text-muted">Adrián García, 2025</p>
+                </div>
+            </div>
+        </div>
     </footer>
 
     <!-- Bootstrap JS -->

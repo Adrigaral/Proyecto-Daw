@@ -77,51 +77,44 @@ class UsuarioController extends Controller
 
     public function altaForm()
     {
-        $this->restart_sesion();
+        //$this->restart_sesion();
         $this->vista->show('alta-usuario');
     }
 
     public function loginForm()
     {
-        $this->restart_sesion();
         $this->vista->show('inicio-usuario');
     }
 
 
     public function login()
     {
-        $this->restart_sesion();
         $username = $_POST['username'] ?? null;
         $contrasinal = $_POST['contrasinal'] ?? null;
-        $id_usuario = null;
         $error = "";
-        //Si llegan datos del formulario los procesamos
-        if (isset($username) && isset($contrasinal)) {
+
+        if ($username && $contrasinal) {
             $tipo_usuario = UsuarioModel::comprobar_usuario($username, $contrasinal);
-            $ruta = $tipo_usuario === 'PREMIUM' ? 'premium' : ($tipo_usuario === 'NORMAL' ? 'lista_eventos_activos' : null);
-        }
-        if ($ruta) {
-            //Establecemos la variable de sesión
             $id_usuario = UsuarioModel::get_id_usuario($username);
             $_SESSION['id_usuario'] = $id_usuario;
             $_SESSION['loged'] = $username;
             $_SESSION['tipo'] = $tipo_usuario;
 
-            //Evitamos que accedan a la cookie de sesión desde javascript
+            // Cookies seguras
             $params = session_get_cookie_params();
             setcookie(session_name(), session_id(), $params["lifetime"], $params["path"], $params["domain"], true, true);
-
-            //Creamos la cookie que caducara en 10 minutos.
             setcookie("t_reset", "on", time() + 600, "", "", true, true);
-            // header("Location: index.php?controller=EventoController&action=$ruta");
+
             header("Location: index.php?controller=EventoController&action=lista_eventos_activos");
             exit;
         } else {
-            $error .= 'Login incorrecto.<br>';
+            $error .= 'Faltan campos del formulario.<br>';
         }
+
         $data['errores'] = $error;
         $this->vista->show('inicio-usuario', $data);
     }
+
 
     public function altaUsuario()
     {
@@ -132,7 +125,7 @@ class UsuarioController extends Controller
         $correo_electronico = $_POST['correo_electronico'] ?? null;
         $username = $_POST['username'] ?? null;
         $contrasinal = $_POST['contrasinal'] ?? null;
-        $tipo_usuario = isset($_POST['tipo_usuario']) ? 'PREMIUM' : 'NORMAL';
+        $tipo_usuario = isset($_POST['tipo_usuario']) ? 2 : 1;
         $foto_perfil = "../img/Porsche.jpg";
         $estado_usuario = 'ACTIVO';
         $error = '';
@@ -348,6 +341,6 @@ class UsuarioController extends Controller
         if (!empty($error)) {
             $data['errores'] = $error;
         }
-        $this->vista->show('lista-usuarios', $data); 
+        $this->vista->show('lista-usuarios', $data);
     }
 }

@@ -41,21 +41,13 @@ h3{
   font-size: 16px;
 }
 
-/* Logo */
 #logo {
   max-height: 60px;
   width: auto;
 }
 
-/* nav{
-  margin-right: 7rem;
-} */
-
 .start-section {
-  background-image: url('../img/Porsche.jpg');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),url('../img/passion911.jpg') center/cover no-repeat;
   height: 500px;
   padding: 2rem;
 }
@@ -166,7 +158,6 @@ h2.eventos{
   padding-top: 1rem;
 }
 
-/* Section titles */
 .section-title {
   color: #E45959;
   text-transform: uppercase;
@@ -180,18 +171,16 @@ section.hero-section, main {
   background-color: #422828;
 }
 
-/* Article text */
 .about-text {
   font-family: 'Judson';
   color: #E45959;
   font-size: 20px;
 }
 
-/* Images */
 .about-img {
   border-radius: 10px;
   width: 100%;
-  max-width: 60%; /* o el valor que prefieras */
+  max-width: 60%;
   min-width: 40%;
   height: auto;
   box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.25);
@@ -201,7 +190,6 @@ section.hero-section, main {
   color: white;
 }
 
-/* Footer */
 .footer-text {
   color: #E87272;
   font-size: 18px;

@@ -1,6 +1,7 @@
 <?php
 include_once("controller.php");
 include_once($_SERVER["DOCUMENT_ROOT"] . "/controlador/usuario-controller.php");
+include_once($_SERVER["DOCUMENT_ROOT"] . "/controlador/evento-controller.php");
 include_once($_SERVER["DOCUMENT_ROOT"] . "/modelo/inscribe-model.php");
 class InscribeController extends Controller
 {
@@ -21,6 +22,8 @@ class InscribeController extends Controller
         session_start();
         $id_usuario = $_POST['id_usuario'] ?? null;
         $id_evento = $_POST['id_evento'] ?? null;
+
+        EventoModel::actualizar_estados_automaticamente();
 
         if (!$id_usuario || !$id_evento) {
             $_SESSION['error'] = "Faltan datos para inscribirse.";
@@ -74,6 +77,8 @@ class InscribeController extends Controller
         $id_usuario = $_POST['id_usuario'] ?? null;
         $id_evento = $_POST['id_evento'] ?? null;
 
+        EventoModel::actualizar_estados_automaticamente();
+
         if (!$id_usuario || !$id_evento) {
             $_SESSION['error'] = "Faltan datos para quitar la inscripción.";
             header("Location: index.php?controller=EventoController&action=lista_eventos_activos");
@@ -97,6 +102,8 @@ class InscribeController extends Controller
     {
         $id_evento = $_POST['id_evento'] ?? null;
         $id_usuario = $_SESSION['id_usuario'] ?? null;
+
+        EventoModel::actualizar_estados_automaticamente();
 
         $error = '';
         if (!$id_evento || !$id_usuario) {

@@ -8,11 +8,11 @@ class Usuario
     private string $correo_electronico;
     private string $username;
     private string $contrasinal;
-    private string $tipo_usuario;
+    private int $id_tipo_usuario;
     private string $estado_usuario;
     private string $foto_perfil;
 
-    public function __construct(string $dni, string $nombre, string $correo_electronico, string $username, string $contrasinal, string $tipo_usuario, string $estado_usuario, string $foto_perfil, int $id = null)
+    public function __construct(string $dni, string $nombre, string $correo_electronico, string $username, string $contrasinal, int $id_tipo_usuario, string $estado_usuario, string $foto_perfil, int $id = null)
     {
         if (isset($id)) {
             $this->id_usuario = $id;
@@ -22,7 +22,7 @@ class Usuario
         $this->correo_electronico = $correo_electronico;
         $this->username = $username;
         $this->contrasinal = $contrasinal;
-        $this->tipo_usuario = $tipo_usuario;
+        $this->id_tipo_usuario = $id_tipo_usuario;
         $this->estado_usuario = $estado_usuario;
         $this->foto_perfil = $foto_perfil;
     }
@@ -150,21 +150,21 @@ class Usuario
     }
 
     /**
-     * Get the value of tipo_usuario
+     * Get the value of id_tipo_usuario
      */
-    public function getTipo_usuario()
+    public function getId_tipo_usuario()
     {
-        return $this->tipo_usuario;
+        return $this->id_tipo_usuario;
     }
 
     /**
-     * Set the value of tipo_usuario
+     * Set the value of id_tipo_usuario
      *
      * @return  self
      */
-    public function setTipo_usuario($tipo_usuario)
+    public function setId_tipo_usuario($id_tipo_usuario)
     {
-        $this->tipo_usuario = $tipo_usuario;
+        $this->id_tipo_usuario = $id_tipo_usuario;
 
         return $this;
     }
@@ -212,6 +212,28 @@ class Usuario
 
 class UsuarioModel
 {
+    public static function tienePermiso(Usuario $usuario, string $controller, string $action): bool
+    {
+        static $cachePermisos = [];
+
+        $tipo = $usuario->getId_tipo_usuario();
+
+        if (!isset($cachePermisos[$tipo])) {
+            $pdo = conexionBD::get();
+            $sql = "
+            SELECT CONCAT(p.controller,'::',p.action) AS permiso
+            FROM permisos p
+            JOIN tipo_usuario_permiso tup USING(id_permiso)
+            JOIN tipos_usuario tu ON tu.id_tipo_usuario = tup.id_tipo_usuario
+            WHERE tu.id_tipo_usuario = :tipo
+        ";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute([':tipo' => $tipo]);
+            $cachePermisos[$tipo] = $stmt->fetchAll(PDO::FETCH_COLUMN) ?: [];
+        }
+
+        return in_array("$controller::$action", $cachePermisos[$tipo], true);
+    }
 
     public static function validarDNI($dni)
     {
@@ -273,7 +295,7 @@ class UsuarioModel
     {
         $usuario = [];
         $pdo = conexionBD::get();
-        $sql = "SELECT id_usuario, dni, nombre, correo_electronico, username, contrasinal, tipo_usuario, estado_usuario, foto_perfil 
+        $sql = "SELECT id_usuario, dni, nombre, correo_electronico, username, contrasinal, id_tipo_usuario, estado_usuario, foto_perfil 
             FROM usuarios 
             WHERE id_usuario = ?";
 
@@ -289,7 +311,7 @@ class UsuarioModel
                     $row['correo_electronico'],
                     $row['username'],
                     $row['contrasinal'],
-                    $row['tipo_usuario'],
+                    $row['id_tipo_usuario'],
                     $row['estado_usuario'],
                     $row['foto_perfil'],
                     $row['id_usuario']
@@ -365,7 +387,12 @@ class UsuarioModel
     public static function comprobar_usuario(string $username, string $contrasinal)
     {
         $pdo = conexionBD::get();
-        $sql = "SELECT tipo_usuario FROM usuarios WHERE username = ? AND contrasinal = ?";
+        $sql = "
+        SELECT t.nombre_tipo
+        FROM usuarios u
+        JOIN tipos_usuario t ON u.id_tipo_usuario = t.id_tipo_usuario
+        WHERE u.username = ? AND u.contrasinal = ?
+    ";
         $query = $pdo->prepare($sql);
         $query->bindParam(1, $username, PDO::PARAM_STR);
         $query->bindValue(2, sha1($contrasinal), PDO::PARAM_STR);
@@ -375,14 +402,15 @@ class UsuarioModel
         $query = null;
         $pdo = null;
 
-        return $result['tipo_usuario'] ?? false; // 'PREMIUM', 'NORMAL', o false si no existe
+        return $result['nombre_tipo'] ?? false; // 'PREMIUM', 'NORMAL', o false si no existe
     }
+
 
     public static function insertar_usuario(Usuario $u)
     {
         $toret = false;
         $pdo = conexionBD::get();
-        $sql = "INSERT INTO usuarios(dni, nombre, correo_electronico, username, contrasinal, tipo_usuario, estado_usuario, foto_perfil) VALUES (?,?,?,?,?,?,?,?)";
+        $sql = "INSERT INTO usuarios(dni, nombre, correo_electronico, username, contrasinal, id_tipo_usuario, estado_usuario, foto_perfil) VALUES (?,?,?,?,?,?,?,?)";
 
         try {
             $statement = $pdo->prepare($sql);
@@ -391,7 +419,7 @@ class UsuarioModel
             $statement->bindValue(3, $u->getCorreo_electronico(), PDO::PARAM_STR);
             $statement->bindValue(4, $u->getUsername(), PDO::PARAM_STR);
             $statement->bindValue(5, sha1($u->getContrasinal()), PDO::PARAM_STR);
-            $statement->bindValue(6, $u->getTipo_usuario(), PDO::PARAM_STR);
+            $statement->bindValue(6, $u->getId_tipo_usuario(), PDO::PARAM_INT);
             $statement->bindValue(7, $u->getEstado_usuario(), PDO::PARAM_STR);
             $statement->bindValue(8, $u->getFoto_perfil(), PDO::PARAM_STR);
             // $statement->debugDumpParams();
