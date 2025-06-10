@@ -178,16 +178,28 @@ section.hero-section, main {
 }
 
 .about-img {
+  object-fit: cover;
   border-radius: 10px;
   width: 100%;
-  max-width: 60%;
-  min-width: 40%;
+  max-width: 500px;
+  min-width: 200px;
   height: auto;
   box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.25);
 }
 
 .form-group, .form-check label{
   color: white;
+}
+
+.fade-out {
+  animation: fadeOut 1s forwards;
+}
+
+@keyframes fadeOut {
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
 }
 
 .footer-text {

@@ -1,24 +1,26 @@
 <?php
-session_start();
+require_once("modelo/usuario-model.php");
+require_once("controlador/inicio-controller.php");
+require_once("controlador/usuario-controller.php");
+require_once("controlador/vehiculo-controller.php");
+require_once("controlador/evento-controller.php");
+require_once("controlador/inscribe-controller.php");
 
-include_once("controlador/inicio-controller.php");
-include_once("controlador/usuario-controller.php");
-include_once("controlador/vehiculo-controller.php");
-include_once("controlador/evento-controller.php");
-include_once("controlador/inscribe-controller.php");
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
-include_once("modelo/usuario-model.php");
+$controller = $_REQUEST['controller'] ?? 'InicioController';
+$action = $_REQUEST['action'] ?? 'principal';
 
-$controller = 'InicioController';
-$action = 'principal';
-
-if (isset($_REQUEST['controller']) && isset($_REQUEST['action'])) {
-    $controller = $_REQUEST['controller'];
-    $action = $_REQUEST['action'];
+if (!isset($_REQUEST['controller']) && !isset($_REQUEST['action'])) {
+    if (!empty($_SESSION['loged'])) {
+        header('Location: index.php?controller=EventoController&action=lista_eventos_activos');
+        exit;
+    }
 }
 
 $usuario = null;
-
 $id = $_SESSION['id_usuario'] ?? null;
 if ($id) {
     $usuario = UsuarioModel::get_usuario($id);
@@ -29,17 +31,23 @@ $accionesPublicas = [
     'UsuarioController' => ['altaForm', 'altaUsuario', 'loginForm', 'login']
 ];
 
+if (
+    isset($_SESSION['loged']) && $controller === 'UsuarioController' &&
+    in_array($action, ['loginForm', 'login', 'altaForm', 'altaUsuario'])
+) {
+    header('Location: index.php?controller=EventoController&action=lista_eventos_activos');
+    exit;
+}
+
 $esPublico = isset($accionesPublicas[$controller]) && in_array($action, $accionesPublicas[$controller]);
 
 if ($esPublico || ($usuario instanceof Usuario && UsuarioModel::tienePermiso($usuario, $controller, $action))) {
     try {
-        $object = new $controller();
-        $object->$action();
+        $obj = new $controller();
+        $obj->$action();
     } catch (Throwable $th) {
-        $object = new InicioController();
-        $object->principal();
+        (new InicioController())->principal();
     }
 } else {
-    $object = new InicioController();
-    $object->principal();
+    (new InicioController())->principal();
 }

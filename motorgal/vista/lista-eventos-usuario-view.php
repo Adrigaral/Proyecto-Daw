@@ -11,37 +11,7 @@
 </head>
 
 <body class="d-flex flex-column min-vh-100">
-    <!-- Header -->
-    <header class="sticky-top bg-white py-3 px-4 border-bottom">
-        <div class="d-flex justify-content-between align-items-center">
-            <!-- Logo -->
-            <a href="index.php?user" class="d-flex align-items-center me-4">
-                <img src="../img/motorgal.png" alt="Logo de Motorgal" id="logo">
-            </a>
-
-            <!-- Menú principal -->
-            <nav class="flex-grow-1">
-                <ul class="nav justify-content-evenly">
-                    <li class="nav-item">
-                        <a class="nav-link text-black" href="?controller=EventoController&action=lista_eventos_activos">Eventos</a>
-                    </li>
-                    <li class="nav-item ">
-                        <a class="nav-link text-black" href="?controller=VehiculoController&action=listarVehiculos">Mis Coches</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-black" href="?controller=EventoController&action=listarEventosUsuario">Inscripciones</a>
-                    </li>
-                </ul>
-            </nav>
-
-            <!-- Botones de usuario -->
-            <div class="d-flex align-items-center gap-4">
-                <p class="mb-0 text-primary"><?= $_SESSION['loged'] ?></p>
-                <a href="?controller=UsuarioController&action=logout" class="btn btn-dark">Salir</a>
-            </div>
-        </div>
-    </header>
-
+    <?php include_once("header.php"); ?>
     <main class="flex-fill">
         <article class="container my-5 bg-light border rounded">
             <h1 class="mb-4 mt-4 text-center event-ins">Eventos inscritos</h1>
@@ -116,7 +86,7 @@
                                             <input type="hidden" name="controller" value="EventoController">
                                             <input type="hidden" name="action" value="ver_evento">
                                             <input type="hidden" name="id" value="<?= $evento['id_evento'] ?>">
-                                            <button type="submit" class="btn text-white">Ver detalles</button>
+                                            <button type="submit" class="btn btn-outline-danger text-white">Ver detalles</button>
                                         </form>
                                     </div>
                                 </div>
@@ -144,15 +114,7 @@
         </article>
     </main>
 
-    <!-- Footer -->
-    <footer class="pt-5 pb-4 px-4 d-flex justify-content-around align-items-center flex-wrap footer">
-
-        <p class="footer-text">Motorgal</p>
-        <p><a href="#" class="footer-link">Aviso Legal</a></p>
-        <p><a href="#" class="footer-link">Política de Privacidad</a></p>
-        <p><a href="#" class="footer-link">Cookies</a></p>
-        <p class="footer-text">Adrián García, 2025</p>
-    </footer>
+    <?php include_once("footer.php"); ?>
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

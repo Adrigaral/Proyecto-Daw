@@ -1,0 +1,13 @@
+RewriteEngine On
+
+# Soporte para URLs tipo /controller/action
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^([^/]+)/([^/]+)$ index.php?controller=$1&action=$2 [QSA,L]
+
+# Fallback general
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^ index.php [QSA,L]
+
+Options -Indexes

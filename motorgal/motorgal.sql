@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: mariadb:3306
--- Tiempo de generación: 09-06-2025 a las 22:53:47
+-- Tiempo de generación: 10-06-2025 a las 19:58:07
 -- Versión del servidor: 10.6.19-MariaDB
 -- Versión de PHP: 8.2.24
 
@@ -46,7 +46,7 @@ CREATE TABLE IF NOT EXISTS `eventos` (
   `longitud` decimal(11,8) DEFAULT NULL,
   PRIMARY KEY (`id_evento`),
   KEY `id_usuario` (`id_usuario`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `eventos`
@@ -57,7 +57,9 @@ INSERT INTO `eventos` (`id_evento`, `id_usuario`, `titulo`, `descripcion`, `fech
 (2, 4, 'Concentración de vehículos Porsche', 'Acércate para que admiremos todos tu máquina Porsche que tan enamorado te tiene.', '2025-06-06 09:00:00', '2025-06-06 22:30:00', 'CANCELADO', 30, 'Porsche', 'A Coruña', 10.00, 'Porsche.jpg', NULL, NULL),
 (3, 4, 'Gran Premio de Competición BMW', 'Se celebrará en Santiago de Compostela en el circuíto de Vilas un gran premio para ver cual BMW se supera más y hace un mejor tiempo. Y sabéis que dá igual la máquina mientras haya conductor.', '2025-06-09 10:00:00', '2025-06-10 22:30:00', 'EN PROGRESO', 30, 'Bmw', 'Santiago de Compostela', 15.00, 'BMW.webp', 42.59768300, NULL),
 (4, 4, 'Manifestación de vehículos Porsche', 'Venid a mostrarnos a todos vuestras máquinas Porsche más preciadas en Santiago de Compostela, en el aparcamiento de la Ciudad de la Cultura. El más bonito recibirá un premio, y además habrá más sorpresas que desvelaremos en el evento. ¡Nos vemos allí amigos!', '2025-06-07 10:00:00', '2025-06-08 22:30:00', 'FINALIZADO', 30, 'Porsche', 'Santiago de Compostela', 0.00, 'evento_683f425a74600.jpg', 42.86308100, -8.50341800),
-(6, 4, 'Audi expo en la ciudad de Santiago de Compostela', 'Coches preciosos y con la esencia de cada uno de vosotros.', '2025-06-14 07:30:00', '2025-06-15 23:00:00', 'ACTIVO', 20, 'Audi', 'Santiago de Compostela', 20.00, 'evento_6846b97c32074.webp', 42.81132000, -8.42239400);
+(6, 4, 'Audi expo en la ciudad de Santiago de Compostela', 'Coches preciosos y con la esencia de cada uno de vosotros.', '2025-06-14 07:30:00', '2025-06-15 23:00:00', 'ACTIVO', 20, 'Audi', 'Santiago de Compostela', 20.00, 'evento_6846b97c32074.webp', 42.81132000, -8.42239400),
+(7, 7, 'Gran Premio de Hyundai', 'Queremos celebrar con todos vosotros una experiencia única y que se recordará por siempre, por ello queremos que todos vosotros traigáis vuestro vehículo Hyundai y compartáis vuestra pasión con los vuestros. Venid y disfrutad de una buena quedada llena de premios y comida.', '2025-06-20 10:00:00', '2025-06-22 22:00:00', 'ACTIVO', 50, 'Hyundai', 'A Coruña', 0.00, 'evento_68480acda462e.webp', 43.37117500, -8.42808000),
+(9, 7, 'Volkswagen Fest', 'Los coches más bonitos y deportivos que más arrasan en nuestro país, adéntrate en esta fantasía y disfruta de las vistas.', '2025-06-28 09:00:00', '2025-06-29 21:00:00', 'ACTIVO', 35, 'Volkswagen', 'Vigo', 0.00, 'evento_68480c8426558.webp', 42.22710000, -8.73949500);
 
 -- --------------------------------------------------------
 
@@ -78,6 +80,7 @@ CREATE TABLE IF NOT EXISTS `inscribe` (
 --
 
 INSERT INTO `inscribe` (`id_usuario`, `id_evento`, `fecha_inscripcion`) VALUES
+(4, 9, '2025-06-10 10:53:29'),
 (5, 1, '2025-05-30 23:15:12'),
 (5, 2, '2025-06-05 17:39:19'),
 (5, 3, '2025-06-02 21:19:18'),
@@ -108,6 +111,7 @@ INSERT INTO `permisos` (`id_permiso`, `controller`, `action`, `descripcion`) VAL
 (3, 'VehiculoController', 'eliminarVehiculo', 'Eliminar vehículo'),
 (4, 'VehiculoController', 'actualizarVehiculo', 'Actualizar vehículo'),
 (5, 'UsuarioController', 'logout', 'Cerrar sesión'),
+(6, 'VehiculoController', 'editarVehiculo', 'Editar vehículo'),
 (9, 'EventoController', 'lista_eventos_activos', 'Listar eventos activos'),
 (10, 'EventoController', 'lista_eventos_creados', 'Listar eventos creados por el usuario'),
 (11, 'EventoController', 'listarEventosUsuario', 'Listar eventos por usuario'),
@@ -165,6 +169,7 @@ INSERT INTO `tipo_usuario_permiso` (`id_tipo_usuario`, `id_permiso`) VALUES
 (1, 3),
 (1, 4),
 (1, 5),
+(1, 6),
 (1, 9),
 (1, 11),
 (1, 12),
@@ -176,6 +181,7 @@ INSERT INTO `tipo_usuario_permiso` (`id_tipo_usuario`, `id_permiso`) VALUES
 (2, 3),
 (2, 4),
 (2, 5),
+(2, 6),
 (2, 9),
 (2, 10),
 (2, 11),
@@ -208,7 +214,7 @@ CREATE TABLE IF NOT EXISTS `usuarios` (
   UNIQUE KEY `dni` (`dni`),
   UNIQUE KEY `correo_electronico` (`correo_electronico`),
   KEY `fk_usuarios_tipo` (`id_tipo_usuario`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `usuarios`
@@ -218,7 +224,9 @@ INSERT INTO `usuarios` (`id_usuario`, `dni`, `nombre`, `correo_electronico`, `us
 (1, '12345678Z', 'Adrián García', 'adrian@example.com', 'adriangarcia', '2ac753375c8e9e6675b3e8f3c63fd53aea3d4a64', 'ACTIVO', '../img/Porsche.jpg', 2),
 (4, '13895654C', 'Candela Mundiña Muiños', 'cande@gmail.com', 'caandelam', 'e665f4d3e9ce97415665f498749cdee4a7ab449c', 'ACTIVO', '../img/Porsche.jpg', 2),
 (5, '54226670F', 'Adrián García Álvarez', 'adrian@gmail.com', 'alsonder', '9627956c5f4b00eec8b129e114ea46f60e134a70', 'ACTIVO', '../img/Porsche.jpg', 1),
-(6, '19843914C', 'Pedro Vázquez', 'pedrovazquez@gmail.com', 'pedrovazquez', '97afe14706199c2a34cec1a3e7d2c0dfcc5c58c1', 'ACTIVO', '../img/Porsche.jpg', 1);
+(6, '19843914C', 'Pedro Vázquez', 'pedrovazquez@gmail.com', 'pedrovazquez', '97afe14706199c2a34cec1a3e7d2c0dfcc5c58c1', 'ACTIVO', '../img/Porsche.jpg', 1),
+(7, '76016164Z', 'Jacob Diaz', 'mindseye@gmail.com', 'mindseye', 'be62c840117201bd5aaa8ad4e4f7b6c76662a59d', 'ACTIVO', '../img/Porsche.jpg', 2),
+(8, '54384041N', 'Alex García', 'agarcia7@gmail.com', 'agarcia7', '51bc7a431b59048b06855319087670d001042574', 'ACTIVO', '../img/Porsche.jpg', 1);
 
 -- --------------------------------------------------------
 
@@ -236,7 +244,7 @@ CREATE TABLE IF NOT EXISTS `vehiculos` (
   PRIMARY KEY (`id_vehiculo`),
   UNIQUE KEY `matricula` (`matricula`),
   KEY `id_usuario` (`id_usuario`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `vehiculos`
@@ -246,7 +254,8 @@ INSERT INTO `vehiculos` (`id_vehiculo`, `id_usuario`, `matricula`, `marca`, `mod
 (8, 5, '3655FTR', 'Porsche', '911 Carrera', 2017),
 (10, 5, '6344RLR', 'Bmw', 'M3 Competition', 2024),
 (12, 5, '6244DUV', 'Bmw', 'M2', 2007),
-(13, 6, '8699WEE', 'Porsche', 'Cayman S', 2016);
+(13, 6, '8699WEE', 'Porsche', 'Cayman S', 2016),
+(14, 4, '4564GWF', 'Volkswagen', 'TDI', 2010);
 
 --
 -- Restricciones para tablas volcadas

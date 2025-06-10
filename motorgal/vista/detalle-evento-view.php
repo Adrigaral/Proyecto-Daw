@@ -10,39 +10,11 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <link rel="stylesheet" href="../estilos/style.css">
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="../js/ocultar-texto.js"></script>
 </head>
 
 <body class="d-flex flex-column min-vh-100">
-    <!-- Header -->
-    <header class="sticky-top bg-white py-3 px-4 border-bottom">
-        <div class="d-flex justify-content-between align-items-center">
-            <!-- Logo -->
-            <a href="index.php?user" class="d-flex align-items-center me-4">
-                <img src="../img/motorgal.png" alt="Logo de Motorgal" id="logo">
-            </a>
-
-            <!-- Menú principal -->
-            <nav class="flex-grow-1">
-                <ul class="nav justify-content-evenly">
-                    <li class="nav-item">
-                        <a class="nav-link text-black" href="?controller=EventoController&action=lista_eventos_activos">Eventos</a>
-                    </li>
-                    <li class="nav-item ">
-                        <a class="nav-link text-black" href="?controller=VehiculoController&action=listarVehiculos">Mis Coches</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-black" href="?controller=EventoController&action=listarEventosUsuario">Inscripciones</a>
-                    </li>
-                </ul>
-            </nav>
-
-            <!-- Botones de usuario -->
-            <div class="d-flex align-items-center gap-4">
-                <p class="mb-0 text-primary"><?= $_SESSION['loged'] ?></p>
-                <a href="?controller=UsuarioController&action=logout" class="btn btn-dark">Salir</a>
-            </div>
-        </div>
-    </header>
+    <?php include_once("header.php"); ?>
     <main class="flex-fill">
         <article class="container my-5">
             <div class="card shadow-lg border-0 p-4 event-card">
@@ -94,7 +66,7 @@
 
                     <?php if (!empty($data['creador']) && isset($_SESSION['id_usuario']) && $data['creador'] == $_SESSION['id_usuario']): ?>
                         <?php $inscritos = $data['inscritos'] ?? []; ?>
-                        <?php if (($evento->getEstado_evento() === 'ACTIVO' || $evento->getEstado_evento() === 'EN PROGRESO') && !empty($inscritos)): ?>
+                        <?php if ($evento->getEstado_evento() === 'ACTIVO' || $evento->getEstado_evento() === 'EN PROGRESO'): ?>
                             <div class="container filter my-4">
                                 <div class="d-flex align-items-center justify-content-center flex-wrap gap-3">
                                     <form method="get" action="index.php" class="d-flex align-items-center gap-2">
@@ -135,11 +107,11 @@
                             </div>
                         <?php else: ?>
                             <?php if (!empty($data['matricula'])): ?>
-                                <div class="alert alert-warning mt-4">
+                                <div class="alert alert-warning mt-3 alert-dismissible fade show text-center">
                                     No se encontró ninguna coincidencia para la matrícula "<strong><?= htmlspecialchars($data['matricula']) ?></strong>".
                                 </div>
                             <?php else: ?>
-                                <div class="alert alert-info mt-4">No hay ningún usuario inscrito en este evento.</div>
+                                <div class="alert alert-info mt-3 alert-dismissible fade show text-center">No hay ningún usuario inscrito en este evento.</div>
                             <?php endif; ?>
                         <?php endif; ?>
                         <!-- Paginación -->
@@ -157,7 +129,7 @@
                             </nav>
                         <?php endif; ?>
                         <div class="text-center mt-4">
-                            <a href="index.php?controller=EventoController&action=lista_eventos_creados" class="btn text-white">
+                            <a href="index.php?controller=EventoController&action=lista_eventos_creados" class="btn btn-outline-danger text-white">
                                 Volver a mis eventos
                             </a>
                         </div>
@@ -168,13 +140,13 @@
                                     <form action="index.php?controller=InscribeController&action=quitarInscripcion" method="POST">
                                         <input type="hidden" name="id_evento" value="<?= htmlspecialchars($data['evento']->getId_evento()) ?>">
                                         <input type="hidden" name="id_usuario" value="<?= htmlspecialchars($_SESSION['id_usuario'] ?? '') ?>">
-                                        <button type="submit" class="btn text-white">Quitar Inscripción</button>
+                                        <button type="submit" class="btn btn-outline-danger text-white">Quitar Inscripción</button>
                                     </form>
                                 <?php else: ?>
                                     <form action="index.php?controller=InscribeController&action=inscribirse" method="POST">
                                         <input type="hidden" name="id_evento" value="<?= htmlspecialchars($data['evento']->getId_evento()) ?>">
                                         <input type="hidden" name="id_usuario" value="<?= htmlspecialchars($_SESSION['id_usuario'] ?? '') ?>">
-                                        <button type="submit" class="btn text-white">Inscribirse</button>
+                                        <button type="submit" class="btn btn-outline-danger text-white">Inscribirse</button>
                                     </form>
                                 <?php endif; ?>
                             </div>
@@ -182,28 +154,28 @@
                             <p class="text-danger text-center fw-bold">La inscripción ha terminado.</p>
                         <?php endif; ?>
                         <div class="text-center mt-4">
-                            <a href="index.php?controller=EventoController&action=listarEventosUsuario" class="btn text-white">
+                            <a href="index.php?controller=EventoController&action=listarEventosUsuario" class="btn btn-outline-danger text-white">
                                 Ir a inscripciones
                             </a>
                         </div>
                     <?php endif; ?>
 
                     <?php if (isset($_SESSION['mensaje'])): ?>
-                        <p class="alert alert-success mt-3 text-center">
+                        <p class="alert alert-success mt-3 alert-dismissible fade show text-center" role="alert" id="alert-success">
                             <?= htmlspecialchars($_SESSION['mensaje']) ?>
                         </p>
                         <?php unset($_SESSION['mensaje']); ?>
                     <?php endif; ?>
 
                     <?php if (isset($_SESSION['error'])): ?>
-                        <p class="alert alert-danger mt-3 text-center">
+                        <p class="alert alert-danger mt-3 alert-dismissible fade show text-center" role="alert" id="alert-error">
                             <?= htmlspecialchars($_SESSION['error']) ?>
                         </p>
                         <?php unset($_SESSION['error']); ?>
                     <?php endif; ?>
 
                     <div class="text-center mt-4">
-                        <a href="index.php?controller=EventoController&action=lista_eventos_activos" class="btn text-white">
+                        <a href="index.php?controller=EventoController&action=lista_eventos_activos" class="btn btn-outline-danger text-white">
                             Ir a la lista de eventos
                         </a>
                     </div>
@@ -212,15 +184,7 @@
         </article>
     </main>
 
-    <!-- Footer -->
-    <footer class="pt-5 pb-4 px-4 d-flex justify-content-around align-items-center flex-wrap footer">
-
-        <p class="footer-text">Motorgal</p>
-        <p><a href="#" class="footer-link">Aviso Legal</a></p>
-        <p><a href="#" class="footer-link">Política de Privacidad</a></p>
-        <p><a href="#" class="footer-link">Cookies</a></p>
-        <p class="footer-text">Adrián García, 2025</p>
-    </footer>
+    <?php include_once("footer.php"); ?>
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

@@ -21,10 +21,10 @@
 
       <!-- Menú de navegación -->
       <div class="d-flex flex-column flex-sm-row gap-2 ms-auto" id="mainNavbar">
-        <a class="btn btn-sm text-white px-3 py-2" href="?controller=UsuarioController&action=altaForm">
+        <a class="btn btn-sm btn-outline-danger text-white px-3 py-2" href="?controller=UsuarioController&action=altaForm">
           Regístrate ya
         </a>
-        <a class="btn btn-sm text-white px-3 py-2" href="?controller=UsuarioController&action=loginForm">
+        <a class="btn btn-sm btn-outline-danger text-white px-3 py-2" href="?controller=UsuarioController&action=loginForm">
           Inicia Sesión
         </a>
       </div>
@@ -38,16 +38,23 @@
 
   <!-- Sobre nosotros -->
   <section class="hero-section">
-    <h2 class="section-title">Sobre nosotros</h2>
-    <article class="container d-flex align-items-center gap-4 py-5">
-      <p class="about-text">Somos una página destinada a los eventos del motor para que este mundo se expanda y abra un abanico de posibilidades para todos nuestros fanáticos del sector.</p>
+    <h2 class="section-title text-center mb-4">Sobre nosotros</h2>
+
+    <article class="container d-flex align-items-center justify-content-center gap-3">
+      <p class="about-text flex-fill">
+        Somos una página destinada a los eventos del motor para que este mundo se expanda y abra un abanico de posibilidades para todos nuestros fanáticos del sector.
+      </p>
       <img src="../img/Kdd-de-coches.jpg" alt="quedada de coches" class="about-img">
     </article>
-    <article class="container d-flex align-items-center gap-4 py-5">
+
+    <article class="container d-flex align-items-center justify-content-center gap-3 py-5 flex-row-reverse">
+      <p class="about-text flex-fill">
+        Si quieres formar parte de este proyecto, no dudes en echar un ojo a todos nuestros eventos. Gracias por visitarnos.
+      </p>
       <img src="../img/cochesclasicos.jpg" alt="expo coches clasicos" class="about-img">
-      <p class="about-text">Si quieres formar parte de este proyecto, no dudes en echar un ojo a todos nuestros eventos. Gracias por visitarnos.</p>
     </article>
   </section>
+
 
   <!-- Footer -->
   <footer class="bg-light pt-4 pb-3 border-top">

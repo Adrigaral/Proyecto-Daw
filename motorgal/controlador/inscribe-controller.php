@@ -19,7 +19,6 @@ class InscribeController extends Controller
 
     public function inscribirse()
     {
-        session_start();
         $id_usuario = $_POST['id_usuario'] ?? null;
         $id_evento = $_POST['id_evento'] ?? null;
 
@@ -72,8 +71,6 @@ class InscribeController extends Controller
 
     public function quitarInscripcion()
     {
-        session_start();
-
         $id_usuario = $_POST['id_usuario'] ?? null;
         $id_evento = $_POST['id_evento'] ?? null;
 

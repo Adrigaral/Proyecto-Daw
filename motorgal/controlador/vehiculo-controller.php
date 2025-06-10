@@ -1,7 +1,6 @@
 <?php
 include_once("controller.php");
 include_once($_SERVER["DOCUMENT_ROOT"] . "/modelo/vehiculo-model.php");
-include_once($_SERVER["DOCUMENT_ROOT"] . "/controlador/usuario-controller.php");
 
 class VehiculoController extends Controller
 {
@@ -10,17 +9,10 @@ class VehiculoController extends Controller
     public function __construct()
     {
         parent::__construct();
-        $this->usuarioController = new UsuarioController();
-    }
-
-    private function checkSession()
-    {
-        $this->usuarioController->seguridad();
     }
 
     public function listarVehiculos()
     {
-        $this->checkSession();
         $id_usuario = $_SESSION['id_usuario'];
         $vehiculos = VehiculoModel::get_vehiculos_usuario($id_usuario);
         $data['vehiculos'] = $vehiculos;
@@ -29,7 +21,6 @@ class VehiculoController extends Controller
 
     public function insertarVehiculo()
     {
-        $this->checkSession();
         $error = '';
         $data = [];
         $data['marcas'] = VehiculoModel::getMarca() ?? [];
@@ -47,23 +38,23 @@ class VehiculoController extends Controller
             $data['anio'] = $anio;
 
             if (!$matricula || !preg_match("/^[0-9]{4}[A-Z]{3}$/", $matricula)) {
-                $error .= 'La matrícula debe tener el formato 1234ABC.<br>';
+                $error .= 'La matrícula debe tener el formato 1234ABC.';
             }
 
             if (VehiculoModel::existeMatricula($matricula)) {
-                $error .= 'Ya existe un vehículo con esa matrícula.<br>';
+                $error .= 'Ya existe un vehículo con esa matrícula.';
             }
 
             if (!$marca || !in_array($marca, $data['marcas'])) {
-                $error .= 'Selecciona una marca válido.<br>';
+                $error .= 'Selecciona una marca válido.';
             }
 
             if (!$modelo || strlen($modelo) > 30) {
-                $error .= 'El modelo debe tener menos de 30 caracteres.<br>';
+                $error .= 'El modelo debe tener menos de 30 caracteres.';
             }
 
             if (!$anio || !is_numeric($anio) || $anio < 1900 || $anio > date("Y")) {
-                $error .= 'El año debe ser válido.<br>';
+                $error .= 'El año debe ser válido.';
             }
 
             if (empty($error)) {
@@ -73,7 +64,7 @@ class VehiculoController extends Controller
                     $this->listarVehiculos();
                     return;
                 } else {
-                    $error .= "No se pudo insertar el vehículo. Asegúrate de no superar el límite de 3 vehículos.<br>";
+                    $error .= "No se pudo insertar el vehículo. Asegúrate de no superar el límite de 3 vehículos.";
                 }
             }
         }
@@ -85,7 +76,6 @@ class VehiculoController extends Controller
 
     public function eliminarVehiculo()
     {
-        $this->checkSession();
         $id_vehiculo = $_GET['id'] ?? null;
         $id_usuario = $_SESSION['id_usuario'] ?? null;
 
@@ -121,7 +111,6 @@ class VehiculoController extends Controller
 
     public function editarVehiculo()
     {
-        $this->checkSession();
         $data['marcas'] = VehiculoModel::getMarca() ?? [];
         $id_vehiculo = $_GET['id'] ?? null;
         if (!$id_vehiculo) {
@@ -137,8 +126,6 @@ class VehiculoController extends Controller
 
     public function actualizarVehiculo()
     {
-        $this->checkSession();
-
         $data['marcas'] = VehiculoModel::getMarca() ?? [];
 
         $id_vehiculo = $_POST['id_vehiculo'] ?? null;
@@ -151,34 +138,34 @@ class VehiculoController extends Controller
         $error = '';
 
         if (!$id_vehiculo) {
-            $error .= 'Vehículo no válido.<br>';
+            $error .= 'Vehículo no válido.';
         }
 
         if (!$matricula || !preg_match("/^[0-9]{4}[A-Z]{3}$/", $matricula)) {
-            $error .= 'La matrícula debe tener el formato 1234ABC.<br>';
+            $error .= 'La matrícula debe tener el formato 1234ABC.';
         }
 
         if (VehiculoModel::existeMatricula($matricula, $id_vehiculo)) {
-            $error .= 'Ya existe un vehículo con esa matrícula.<br>';
+            $error .= 'Ya existe un vehículo con esa matrícula.';
         }
 
         if (!$marca || strlen($marca) > 30) {
-            $error .= 'La marca debe tener menos de 30 caracteres.<br>';
+            $error .= 'La marca debe tener menos de 30 caracteres.';
         }
 
         if (!$modelo || strlen($modelo) > 30) {
-            $error .= 'El modelo debe tener menos de 30 caracteres.<br>';
+            $error .= 'El modelo debe tener menos de 30 caracteres.';
         }
 
         if (!$anio || !is_numeric($anio) || $anio < 1900 || $anio > date("Y")) {
-            $error .= 'El año debe ser válido.<br>';
+            $error .= 'El año debe ser válido.';
         }
 
         $vehiculoActual = VehiculoModel::get_vehiculo($id_vehiculo);
 
         if ($vehiculoActual && VehiculoModel::vehiculoRelacionadoConEvento($id_vehiculo, $id_usuario)) {
             if ($vehiculoActual->getMarca() !== $marca) {
-                $error .= 'No puedes modificar la marca de este vehículo porque está relacionada con un evento activo. Mínimo un vehículo con esta marca.<br>';
+                $error .= 'No puedes modificar la marca de este vehículo porque está relacionada con un evento activo. Mínimo un vehículo con esta marca.';
             }
         }
 
@@ -189,7 +176,7 @@ class VehiculoController extends Controller
                 $this->listarVehiculos();
                 return;
             } else {
-                $error .= "No se pudo actualizar el vehículo.<br>";
+                $error .= "No se pudo actualizar el vehículo.";
             }
         }
 

@@ -69,7 +69,6 @@ class EventoController extends Controller
 
     public function lista_eventos_creados()
     {
-        session_start();
         $id_usuario = $_SESSION['id_usuario'];
         $lugar = $_GET['lugar'] ?? null;
         $estado = $_GET['estado'] ?? null;
@@ -101,7 +100,6 @@ class EventoController extends Controller
 
     public function listarEventosUsuario()
     {
-        session_start();
         $id_usuario = $_SESSION['id_usuario'];
         $lugar = $_GET['lugar'] ?? null;
         $estado = $_GET['estado'] ?? null;
@@ -134,8 +132,6 @@ class EventoController extends Controller
 
     public function ver_evento()
     {
-        session_start();
-
         $id_evento = $_GET['id'] ?? null;
         $matricula = $_GET['matricula'] ?? null;
         $limite = 6;
@@ -175,25 +171,8 @@ class EventoController extends Controller
         }
     }
 
-    public function lista_eventos()
-    {
-        $modelo = $_GET['modelo'] ?? null;
-        $lugar = $_GET['lugar'] ?? null;
-
-        $eventos = EventoModel::filtrarEventos($modelo, $lugar);
-
-        $data = [
-            'eventos' => $eventos,
-            'modelo' => $modelo,
-            'lugar' => $lugar
-        ];
-
-        $this->vista->show('lista-eventos', $data);
-    }
-
     public function crear_evento()
     {
-        session_start();
         $error = '';
 
         $data['requisitos'] = VehiculoModel::getMarca();
@@ -214,7 +193,7 @@ class EventoController extends Controller
             $data['requisitos'] = $requisito_seleccionado;
 
             if (!$id_usuario || !$titulo || !$descripcion || !$fecha_inicio_evento || !$fecha_fin_evento || !$lugar || !is_numeric($precio) || !is_numeric($latitud) || !is_numeric($longitud)) {
-                $error .= "Todos los campos obligatorios deben ser completados.</br>";
+                $error .= "Todos los campos obligatorios deben ser completados.";
             }
 
             if (empty($error)) {
@@ -223,10 +202,10 @@ class EventoController extends Controller
                     $fecha_fin = new DateTime($fecha_fin_evento);
 
                     if ($fecha_fin < $fecha_inicio) {
-                        $error .= "La fecha de fin no puede ser anterior a la de inicio.</br>";
+                        $error .= "La fecha de fin no puede ser anterior a la de inicio.";
                     }
                 } catch (Exception) {
-                    $error .= "Formato de fecha inválido.</br>";
+                    $error .= "Formato de fecha inválido.";
                 }
             }
 
@@ -276,7 +255,7 @@ class EventoController extends Controller
                 $creado = EventoModel::crearEvento($evento);
                 if ($creado) {
                     $_SESSION['mensaje'] = "Evento creado correctamente.";
-                    $this->vista->show('lista-eventos-organizador');
+                    header('Location: index.php?controller=EventoController&action=lista_eventos_creados');
                     return;
                 } else {
                     $error .= "Error al crear el evento.";
@@ -293,8 +272,6 @@ class EventoController extends Controller
 
     public function modificar_evento()
     {
-        session_start();
-
         $id_evento = $_GET['id'] ?? $_POST['id_evento'] ?? null;
         $error     = '';
         $data      = [];
@@ -302,16 +279,16 @@ class EventoController extends Controller
         EventoModel::actualizar_estados_automaticamente();
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $titulo        = trim($_POST['titulo']        ?? '');
-            $descripcion   = trim($_POST['descripcion']   ?? '');
-            $fechaInicio   = trim($_POST['fecha_inicio_evento'] ?? '');
-            $fechaFin      = trim($_POST['fecha_fin_evento']    ?? '');
-            $lugar         = trim($_POST['lugar']         ?? '');
-            $limitePlazas  = ($_POST['limite_plazas'] !== '') ? (int)$_POST['limite_plazas'] : null;
-            $requisitos    = $_POST['requisitos'] ?? null;
-            $precio        = (float)($_POST['precio']     ?? 0);
-            $latitud       = isset($_POST['latitud'])  ? (float)$_POST['latitud']  : null;
-            $longitud      = isset($_POST['longitud']) ? (float)$_POST['longitud'] : null;
+            $titulo = trim($_POST['titulo'] ?? '');
+            $descripcion = trim($_POST['descripcion'] ?? '');
+            $fechaInicio = trim($_POST['fecha_inicio_evento'] ?? '');
+            $fechaFin = trim($_POST['fecha_fin_evento'] ?? '');
+            $lugar = trim($_POST['lugar'] ?? '');
+            $limitePlazas = ($_POST['limite_plazas'] !== '') ? (int)$_POST['limite_plazas'] : null;
+            $requisitos = $_POST['requisitos'] ?? null;
+            $precio = (float)($_POST['precio'] ?? 0);
+            $latitud = isset($_POST['latitud'])  ? (float)$_POST['latitud'] : null;
+            $longitud = isset($_POST['longitud']) ? (float)$_POST['longitud'] : null;
 
             $foto_evento = $_POST['foto_evento_actual'] ?? null;
 
@@ -339,11 +316,7 @@ class EventoController extends Controller
                 }
             }
 
-            if (
-                !$titulo      || !$descripcion     || !$fechaInicio     || !$fechaFin ||
-                !$lugar       || !is_numeric($precio) || $precio < 0     ||
-                !is_numeric($latitud)  || !is_numeric($longitud)
-            ) {
+            if (!$titulo || !$descripcion || !$fechaInicio || !$fechaFin || !$lugar || !is_numeric($precio) || $precio < 0 || !is_numeric($latitud)  || !is_numeric($longitud)) {
                 $error .= "Todos los campos obligatorios deben ser completados.<br>";
             }
 
@@ -400,8 +373,8 @@ class EventoController extends Controller
             $evento = EventoModel::get_evento((int)$id_evento);
 
             if ($evento) {
-                $data['evento']      = $evento;
-                $data['requisitos']  = VehiculoModel::getMarca();
+                $data['evento'] = $evento;
+                $data['requisitos'] = VehiculoModel::getMarca();
             } else {
                 $_SESSION['errores'] = "Evento no encontrado.";
             }
@@ -437,7 +410,6 @@ class EventoController extends Controller
 
     public function eliminar_evento()
     {
-        session_start();
         $id_evento = $_GET['id'] ?? null;
         $error = '';
 

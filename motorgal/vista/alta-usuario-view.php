@@ -13,27 +13,17 @@
 <body class="d-flex flex-column min-vh-100">
     <!-- Header -->
     <header class="sticky-top bg-white border-bottom">
-        <nav class="navbar navbar-expand-lg navbar-light px-3 py-2">
+        <nav class="navbar navbar-light px-3 py-2">
             <!-- Logo -->
             <a class="navbar-brand d-flex align-items-center me-3" href="index.php">
                 <img src="../img/motorgal.png" alt="Logo de Motorgal" id="logo" height="40">
             </a>
 
-            <!-- Botón hamburguesa para móviles -->
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar"
-                aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
             <!-- Menú de navegación -->
-            <div class="collapse navbar-collapse justify-content-end" id="mainNavbar">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link btn py-2 px-3" href="?controller=UsuarioController&action=loginForm">
-                            Inicia Sesión
-                        </a>
-                    </li>
-                </ul>
+            <div class="d-flex flex-column flex-sm-row gap-2 ms-auto" id="mainNavbar">
+                <a class="btn btn-sm btn-outline-danger text-white px-3 py-2" href="?controller=UsuarioController&action=loginForm">
+                    Inicio Sesión
+                </a>
             </div>
         </nav>
     </header>
@@ -78,11 +68,11 @@
                                 <div class="form-check mb-4">
                                     <input type="checkbox" class="form-check-input" name="tipo_usuario" id="tipo_usuario"
                                         <?= isset($data['tipo_usuario']) && $data['tipo_usuario'] == 'on' ? 'checked' : '' ?>>
-                                    <label class="form-check-label" for="tipo_usuario">Premium</label>
+                                    <label class="form-check-label text-black" for="tipo_usuario">Premium</label>
                                 </div>
 
                                 <div class="d-grid">
-                                    <button type="submit" class="btn text-white">Registrarse</button>
+                                    <button type="submit" class="btn btn-outline-danger text-white">Registrarse</button>
                                 </div>
                             </form>
 

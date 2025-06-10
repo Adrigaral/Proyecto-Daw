@@ -14,47 +14,8 @@ class UsuarioController extends Controller
         $this->vista->show('inicio-usuario');
     }
 
-    public function restart_sesion()
-    {
-        session_start();
-        //Comprobamos si existe la cookie que controla el tiempo.
-        if (isset($_SESSION['loged']) && !isset($_COOKIE['t_reset'])) {
-            //Eliminamos las variables de sesión.
-            session_unset();
-            $params = session_get_cookie_params();
-
-            //Eliminamos la cookie de sesion
-            setcookie(session_name(), '', time() - 100, $params["path"], $params["domain"], $params["secure"], $params["httponly"]);
-            //Cerramos la sesión
-            session_destroy();
-        }
-        if (isset($_SESSION['loged']) && $_SESSION['tipo'] == 'NORMAL') {
-            $this->vista->show('user');
-            exit;
-        }
-        if (isset($_SESSION['loged']) && $_SESSION['tipo'] == 'PREMIUM') {
-            $this->vista->show('premium');
-            exit;
-        }
-    }
-
-    public function seguridad()
-    {
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
-        }
-        $id_usuario = $_SESSION['id_usuario'] ?? null;
-
-        if (!$id_usuario) {
-            $this->vista->show('inicio-view');
-            exit;
-        }
-    }
-
     public function logout()
     {
-        session_start();
-
         // Eliminamos todas las variables de sesión
         session_unset();
 
@@ -71,7 +32,7 @@ class UsuarioController extends Controller
         session_destroy();
 
         // Redirigimos al usuario a la página de inicio de sesión
-        $this->vista->show('inicio-usuario');
+        header("Location: index.php");
     }
 
 
@@ -108,7 +69,7 @@ class UsuarioController extends Controller
             header("Location: index.php?controller=EventoController&action=lista_eventos_activos");
             exit;
         } else {
-            $error .= 'Faltan campos del formulario.<br>';
+            $error .= 'Faltan campos del formulario.';
         }
 
         $data['errores'] = $error;
@@ -132,28 +93,28 @@ class UsuarioController extends Controller
 
         //Validar campos
         if (!isset($dni) || !UsuarioModel::validarDNI($dni)) {
-            $error .= 'El dni no es válido.<br>';
+            $error .= 'El dni no es válido.';
         }
         if (UsuarioModel::existe_dni($dni)) {
-            $error .= "El dni ya existe.<br>";
+            $error .= "El dni ya existe.";
         }
         if (!isset($nombre) || strlen($nombre) > 50) {
-            $error .= 'El nombre completo tiene que tener menos de 50 caracteres.<br>';
+            $error .= 'El nombre completo tiene que tener menos de 50 caracteres.';
         }
         if (isset($correo_electronico)) {
             $correo_electronico = filter_var($correo_electronico, FILTER_VALIDATE_EMAIL);
             if (!$correo_electronico) {
-                $error .= 'Formato del email incorrecto<br>';
+                $error .= 'Formato del email incorrecto';
             }
         }
         if (!isset($username) || strlen($username) > 30) {
-            $error .= 'El nombre de usuario tiene que tener menos de 30 caracteres.<br>';
+            $error .= 'El nombre de usuario tiene que tener menos de 30 caracteres.';
         }
         if (UsuarioModel::existe_username($username)) {
-            $error .= "El nombre de usuario ya existe.<br>";
+            $error .= "El nombre de usuario ya existe.";
         }
         if (!isset($contrasinal) || strlen($contrasinal) < 8) {
-            $error .= 'La contraseña debe tener como mínimo 8 caracteres.<br>';
+            $error .= 'La contraseña debe tener como mínimo 8 caracteres.';
         }
 
         if (isset($_FILES['foto']) && $_FILES['foto']['error'] === UPLOAD_ERR_OK) {
@@ -171,9 +132,20 @@ class UsuarioController extends Controller
             $usuario = new Usuario($dni, $nombre, $correo_electronico, $username, $contrasinal, $tipo_usuario, $estado_usuario, $foto_perfil);
             $insertado = UsuarioModel::insertar_usuario($usuario);
             if ($insertado) {
-                $this->vista->show('inicio-usuario');
+                $id_usuario = UsuarioModel::get_id_usuario($username);
+                $_SESSION['id_usuario'] = $id_usuario;
+                $_SESSION['loged'] = $username;
+                $_SESSION['tipo'] = $tipo_usuario;
+    
+                // Cookies seguras
+                $params = session_get_cookie_params();
+                setcookie(session_name(), session_id(), $params["lifetime"], $params["path"], $params["domain"], true, true);
+                setcookie("t_reset", "on", time() + 600, "", "", true, true);
+    
+                header("Location: index.php?controller=EventoController&action=lista_eventos_activos");
+                exit;
             } else {
-                $error .= "Error al insertar el usuario en la base de datos.<br>";
+                $error .= "Error al insertar el usuario en la base de datos.";
             }
         }
 
@@ -194,7 +166,7 @@ class UsuarioController extends Controller
         if (isset($correo_electronico)) {
             $correo_electronico = filter_var($correo_electronico, FILTER_VALIDATE_EMAIL);
             if (!$correo_electronico) {
-                $error .= 'Formato del email incorrecto<br>';
+                $error .= 'Formato del email incorrecto';
             }
         }
 
@@ -206,7 +178,7 @@ class UsuarioController extends Controller
             if ($actualizado) {
                 $this->vista->show('perfil-usuario');
             } else {
-                $error .= "Error al actualizar el correo del usuario en la base de datos.<br>";
+                $error .= "Error al actualizar el correo del usuario en la base de datos.";
             }
         }
 
@@ -250,7 +222,7 @@ class UsuarioController extends Controller
             if ($actualizado) {
                 $this->vista->show('perfil-usuario');
             } else {
-                $error .= "Error al actualizar la contraseña del usuario en la base de datos.<br>";
+                $error .= "Error al actualizar la contraseña del usuario en la base de datos.";
             }
         }
 

@@ -11,48 +11,8 @@
 </head>
 
 <body class="d-flex flex-column min-vh-100">
-    <!-- Header -->
-    <header class="sticky-top bg-white border-bottom">
-        <nav class="navbar navbar-expand-lg navbar-light px-3 py-2">
-            <!-- Logo -->
-            <a class="navbar-brand d-flex align-items-center me-3" href="index.php?user">
-                <img src="../img/motorgal.png" alt="Logo de Motorgal" id="logo" height="40">
-            </a>
-
-            <!-- Botón hamburguesa para móviles -->
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar" aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <!-- Contenido del navbar -->
-            <div class="collapse navbar-collapse" id="mainNavbar">
-                <!-- Menú principal -->
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0 w-100 justify-content-evenly">
-                    <li class="nav-item">
-                        <a class="nav-link text-black" href="?controller=EventoController&action=lista_eventos_creados">Mis Eventos</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-black" href="?controller=EventoController&action=lista_eventos_activos">Eventos</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-black" href="?controller=VehiculoController&action=listarVehiculos">Mis Coches</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-black" href="?controller=EventoController&action=listarEventosUsuario">Inscripciones</a>
-                    </li>
-                </ul>
-
-                <!-- Usuario y botón salir -->
-                <div class="d-flex align-items-center gap-3 mt-2 mt-lg-0">
-                    <p class="mb-0 text-primary fw-semibold"><?= $_SESSION['loged'] ?></p>
-                    <a href="?controller=UsuarioController&action=logout" class="btn btn-sm text-white">Salir</a>
-                </div>
-            </div>
-        </nav>
-    </header>
-
+    <?php include_once("header.php"); ?>
     <main class="flex-fill">
-
         <?php if ($data['ultimo_evento_activo']): ?>
             <section class="last-event d-flex flex-column align-items-start justify-content-center" style="background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), 
               url('../img/uploads/<?= htmlspecialchars($data['ultimo_evento_activo']->getFoto_evento()) ?>') center/cover no-repeat; height: 500px; padding: 2rem; border-radius: 0.5rem;">
@@ -102,7 +62,7 @@
                                 </option>
                             <?php endforeach; ?>
                         </select>
-                        <button type="submit" class="buscar btn btn-outline-danger btn-sm d-flex align-items-center">Buscar</button>
+                        <button type="submit" class="btn btn-outline-danger text-white btn-sm d-flex align-items-center">Buscar</button>
                     </form>
                 </div>
             </div>
@@ -159,7 +119,7 @@
                                                 <input type="hidden" name="id" value="<?= $evento->getId_evento() ?>">
                                                 <input type="hidden" name="latitud" id="latitud" value="<?= $evento->getLatitud() ?>">
                                                 <input type="hidden" name="longitud" id="longitud" value="<?= $evento->getLongitud() ?>">
-                                                <button type="submit" class="btn btn-dark">Ver detalles</button>
+                                                <button type="submit" class="btn btn-outline-danger text-white">Ver detalles</button>
                                             </form>
                                         </section>
                                     </section>
@@ -190,24 +150,7 @@
         </article>
     </main>
 
-    <!-- Footer -->
-    <footer class="bg-light pt-4 pb-3 border-top">
-        <div class="container">
-            <div class="row text-center text-md-start align-items-center gy-2">
-                <div class="col-12 col-md">
-                    <p class="mb-0 fw-bold">Motorgal</p>
-                </div>
-                <div class="col-12 col-md-auto">
-                    <a href="#" class="text-decoration-none text-muted me-3">Aviso Legal</a>
-                    <a href="#" class="text-decoration-none text-muted me-3">Política de Privacidad</a>
-                    <a href="#" class="text-decoration-none text-muted">Cookies</a>
-                </div>
-                <div class="col-12 col-md text-md-end">
-                    <p class="mb-0 text-muted">Adrián García, 2025</p>
-                </div>
-            </div>
-        </div>
-    </footer>
+    <?php include_once("footer.php"); ?>
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
