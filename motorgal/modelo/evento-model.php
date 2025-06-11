@@ -369,7 +369,7 @@ class EventoModel
     {
         $pdo = conexionBD::get();
         $evento = null;
-    
+
         $sql = "
             SELECT * FROM eventos
             WHERE id_evento = (
@@ -379,13 +379,13 @@ class EventoModel
                   AND id_usuario <> :id_usuario
             )
         ";
-    
+
         try {
             $stmt = $pdo->prepare($sql);
             $stmt->bindValue(':id_usuario', $id_usuario, PDO::PARAM_INT);
             $stmt->execute();
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
-    
+
             if ($row) {
                 $evento = new Evento(
                     $row['id_usuario'],
@@ -409,10 +409,10 @@ class EventoModel
         } finally {
             $pdo = null;
         }
-    
+
         return $evento;
     }
-    
+
     public static function get_eventos(): array
     {
         $pdo = conexionBD::get();
@@ -452,51 +452,6 @@ class EventoModel
         return $eventos;
     }
 
-    public static function get_eventos_activos(int $id_usuario): array
-    {
-        $pdo = conexionBD::get();
-        $eventos = [];
-
-        $sql = "SELECT * FROM eventos 
-            WHERE estado_evento = 'ACTIVO' 
-            AND id_usuario != :id_usuario";
-
-        try {
-            $stmt = $pdo->prepare($sql);
-            $stmt->bindValue(':id_usuario', $id_usuario, PDO::PARAM_INT);
-            $stmt->execute();
-            $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-            foreach ($rows as $row) {
-                $evento = new Evento(
-                    $row['id_usuario'],
-                    $row['titulo'],
-                    $row['descripcion'],
-                    new DateTime($row['fecha_inicio_evento']),
-                    new DateTime($row['fecha_fin_evento']),
-                    $row['estado_evento'],
-                    $row['limite_plazas'],
-                    $row['requisitos'],
-                    $row['lugar'],
-                    (float)$row['precio'],
-                    $row['foto_evento'],
-                    (int)$row['id_evento'],
-                    (float)$row['latitud'],
-                    (float)$row['longitud']
-                );
-                $eventos[] = $evento;
-            }
-        } catch (PDOException $e) {
-            error_log("Error al obtener eventos activos: " . $e->getMessage());
-        } finally {
-            $pdo = null;
-            $stmt = null;
-        }
-
-        return $eventos;
-    }
-
-
     public static function crearEvento(Evento $evento): bool
     {
         $pdo = conexionBD::get();
@@ -530,19 +485,19 @@ class EventoModel
         }
     }
 
-    public static function filtrarEventos(
-        int      $id_usuario,
-        ?string  $modelo = null,
-        ?string  $lugar  = null,
-        int      $limite = 6,
-        int      $offset = 0
-    ): array {
+    public static function filtrarEventos(int $id_usuario, ?string  $modelo = null, ?string $lugar = null, int $limite = 6, int $offset = 0): array
+    {
         $pdo = conexionBD::get();
         $resultados = [];
 
-        $sql = "SELECT * FROM eventos
-                WHERE estado_evento = 'ACTIVO'
-                  AND id_usuario <> :id_usuario";
+        $sql = "SELECT * FROM eventos 
+                WHERE estado_evento = 'ACTIVO' 
+                AND id_usuario != :id_usuario
+                AND id_evento != (
+                    SELECT MAX(id_evento) 
+                    FROM eventos 
+                    WHERE estado_evento = 'ACTIVO'
+                    AND id_usuario != :id_usuario)";
 
         $parametros = [':id_usuario' => $id_usuario];
 
@@ -726,7 +681,12 @@ class EventoModel
 
         $sql = "SELECT COUNT(*) FROM eventos
                 WHERE estado_evento = 'ACTIVO'
-                  AND id_usuario <> :id_usuario";    // excluir propios
+                AND id_usuario != :id_usuario
+                AND id_evento != (
+                    SELECT MAX(id_evento) 
+                    FROM eventos 
+                    WHERE estado_evento = 'ACTIVO'
+                    AND id_usuario != :id_usuario)";
 
         $parametros = [':id_usuario' => $id_usuario_actual];
 
@@ -846,20 +806,19 @@ class EventoModel
         $sql = "
         UPDATE eventos
         SET
-            titulo              = ?,
-            descripcion         = ?,
+            titulo = ?,
+            descripcion = ?,
             fecha_inicio_evento = ?,
-            fecha_fin_evento    = ?,
-            lugar               = ?,
-            limite_plazas       = ?,
-            requisitos          = ?,
-            precio              = ?,
-            foto_evento         = COALESCE(?, foto_evento), -- solo cambia si llega algo
-            latitud             = ?,
-            longitud            = ?
+            fecha_fin_evento = ?,
+            lugar = ?,
+            limite_plazas = ?,
+            requisitos = ?,
+            precio = ?,
+            foto_evento = COALESCE(?, foto_evento), -- solo cambia si llega algo
+            latitud = ?,
+            longitud = ?
         WHERE id_evento = ?
-          AND estado_evento = 'ACTIVO'
-    ";
+        AND estado_evento = 'ACTIVO'";
 
         try {
             $stmt = $pdo->prepare($sql);

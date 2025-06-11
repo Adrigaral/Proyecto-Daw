@@ -151,7 +151,7 @@
         </article>
     </main>
 
-    <?php include_once("footer.php"); ?>
+    <?php include_once("footer.html"); ?>
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

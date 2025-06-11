@@ -93,7 +93,7 @@
         </div>
     </main>
 
-    <?php include_once("footer.php"); ?>
+    <?php include_once("footer.html"); ?>
 
     <script src="../js/image-preview.js"></script>
     <script src="../js/mapa.js"></script>

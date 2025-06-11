@@ -101,7 +101,7 @@ O proxecto consistirá nunha páxina web no que os usuarios poderán crear recei
 > - Clubs de coches.
 > - Organizadores de quedadas locais.
 > - Empresas que queren patrocinar eventos do motor.
-> 
+> Cabe recalcar que estará enfocado nun nicho específico, neste caso Galicia.
 > Tanto usuarios novos como organizadores poden participar da plataforma. Os que pagan a suscrición poden organizar eventos, mentres que todos poden participar se teñen un coche compatible.
 
 ### 2.4- Competencia
@@ -130,31 +130,30 @@ O proxecto consistirá nunha páxina web no que os usuarios poderán crear recei
 
 ### 2.6- Forma xurídica
 
-> Optaríase pola forma xurídica de empresario individual (autónomo) nun inicio, debido á sinxeleza administrativa e baixo custe inicial. Máis adiante, podería transformarse nunha sociedade limitada (SL) para escalar o proxecto.
+> Optaríase pola forma xurídica de empresario individual (autónomo) nun inicio, debido á sinxeleza administrativa e baixo custe inicial permitindo comezar a actividade con pouca burocracia. Ademáis dos custos, a inscrición e mantemento como autónomo teñen un custo menor comparado con outras formas xerídicas, sen necesidade de capital social mínimo e por último contamos cunha xestión máis directa e persoal do negocio o que facilita tomar decisións rápidas e adaptarse ao mercado.
+> Os inconvenientes máis claros son a responsabilidade ilimitada xa que o empresario responde con todo o seu patrimonio persoal ante posibles débedas ou problemas legais e impostos e cotizacións mensuais (mínimo 294 € en 2025) e tributar polo IRPF.
+>  Máis adiante, podería transformarse nunha sociedade limitada (SL) para escalar o proxecto.
 
 ### 2.7- Investimentos
 
 #### 2.7.1- Custos
-> **Custos fixos de variables**
-> - Precios diseñador web por hora: 50 €/h
+> **Custos fixos**
 > - Dominio web: 10 € - 20 € anuais
 > - Aloxamento web: 20 € - 40 € ó mes
 > - Servidor e base de datos: 15 € - 30 € ó mes
 > - Comercio electrónico: 300 € - 600 € ó mes
 > - Licenza ou ferramentas web (Figma, etc.): 0 - 50 €
-> - Ciberseguridade: 200 € - 300 €
-> - Xestión de redes sociais: 1.000 € - 1.500 € ó mes
+> - Ciberseguridade: 200 € - 300 € ao ano
 > 
-> Total fixo estimado: 1.519,17 €	- 2.367,51 € ó mes
+> Total fixo estimado: 361,67 € – 746,67 € ó mes
 >
-> **Impostos e custos sociais**
-> - Imposto sobre Sociedades: Aproximadamente 250 € (se hai beneficios de 1.000 €).
-> - IRPF: 190 € ó mes sendo autónomo.
-> - Seguridade Social: 290 € ó mes.
+> **Impostos e custos sociais (como autónomo)**
+> - Cota de autónomo: 294 € / mes (obrigatoria)
+> - IRPF: variable, só se hai beneficios, pero consideraremos unha estimación mensual de 80 € para cubrir retencións, aínda que podería ser menor no inicio.
+> - Retribución estimada futura (programador full stack junior): 900 € – 1.200 €
 > 
-> Total: 250 € (Sociedades) + 190 € (IRPF) + 290 € (Seguridade Social) = 730 €
-
-> **Total aproximado: 2.249,17 € - 3.097,51 € ó mes**
+> Total custos estimados (incluíndo salario):
+1.635 € – 2.320 € / mes
 
 #### 2.7.2- Ingresos
 

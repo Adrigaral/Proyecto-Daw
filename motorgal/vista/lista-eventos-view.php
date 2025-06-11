@@ -127,7 +127,7 @@
                             </article>
                         <?php endforeach; ?>
                     <?php else: ?>
-                        <p class="text-center">No hay eventos disponibles.</p>
+                        <p class="text-center">No hay más eventos disponibles.</p>
                     <?php endif; ?>
                 </section>
 
@@ -150,7 +150,7 @@
         </article>
     </main>
 
-    <?php include_once("footer.php"); ?>
+    <?php include_once("footer.html"); ?>
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

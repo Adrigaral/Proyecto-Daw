@@ -20,10 +20,36 @@ https://www.figma.com/design/ETQpwC0st35CET4WkJX7RR/MotorGal?node-id=0-1&t=ljElC
 
 ## 3- Innovación
 
-No caso de utilizar tecnoloxías diferentes ás estudadas no ciclo formativo, fai unha descrición dos retos asumidos e como se resolveron.
+Aínda que o proxecto seguiu a estrutura do patrón MVC, que xa fora abordado durante o ciclo, introducín algunhas tecnoloxías novas que supuxeron certos retos e aprendizaxes.
+
+En canto ao desenvolvemento frontend, utilicei Leaflet, unha librería de JavaScript especializada na visualización de mapas interactivos. Esta elección permitiume engadir funcionalidades de xeolocalización aos eventos da aplicación. O principal reto foi comprender o funcionamento básico da libraría, especialmente a integración cos datos procedentes da base de datos. Para iso, tiven que converter coordenadas almacenadas no backend en marcadores dinámicos no mapa, empregando JavaScript e chamadas AJAX.
+
+Tamén empreguei Bootstrap, un framework CSS que facilita a creación de interfaces responsive. Aínda que xa tiña coñecementos básicos de HTML e CSS e algo de Bootstrap que aprendín nun curso fai un par de anos. O uso de Bootstrap permitiume mellorar o deseño visual da aplicación sen ter que desenvolver todo o estilo dende cero e recordar o fácil e divertido que é de usar.
+
+Ambas tecnoloxías requiriron un proceso de aprendizaxe autónomo, consultando documentación oficial e exemplos. Grazas a iso, puiden integrar solucións modernas e mellorar a usabilidade e estética da aplicación.
 
 ## 4- Probas
 
-Deben describirse as probas realizadas e conclusión obtidas. Describir os problemas atopados e como foron solucionados.
+Probas realizadas:
+Rexistro e inicio de sesión: comprobouse que os formularios validan correctamente os datos e que se accede segundo o tipo de usuario.
+
+Creación de eventos: testouse que un usuario pode crear eventos e que aparecen na lista de eventos activos ademáis de poder manipulalos.
+
+Inscrición a eventos: verificouse que un usuario pode inscribirse a eventos nos que non participa como organizador.
+
+Sistema de permisos: probouse que un usuario sen permisos non pode acceder a funcionalidades restrinxidas.
+
+Mapa con Leaflet: comprobouse que os eventos aparecen situados correctamente no mapa.
+
+Responsive con Bootstrap: testouse en diferentes tamaños de pantalla que o deseño se adapta correctamente.
+
+Problemas atopados:
+Marcadores no mapa non aparecían: solucionouse revisando o formato das coordenadas e revisando os datos que chegaban da base de datos.
+
+Erro ao crear eventos sen campos obrigatorios: engadiuse validación en backend e frontend para evitar insercións incompletas.
+
+Redireccións incorrectas ao iniciar ou pechar sesión: solucionouse controlando mellor a lóxica na páxina principal con $_SESSION e redireccións específicas segundo o estado da sesión.
+
+Problemas co acceso directo a index.php: resolvéronse engadindo condicións no .htaccess e no controlador principal.
 
 [**<-Anterior**](../../README.md)
