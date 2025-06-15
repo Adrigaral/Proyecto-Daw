@@ -25,8 +25,11 @@
 
 ## Instalación / Posta en marcha
 
-> *EXPLICACIÓN*: Neste apartado describe con toda precisión e a poder ser coa maior simplicidade/facilidade posible, como poñer en marcha a túa aplicación para probala (nun ambiente local). Valorarase moi positivamente que este proceso sexa o máis fácil posible, cunha simple instrución (p. e. un script de instalación, descarga e posta en marcha dun contedor,...).
->
+Máquina virtual:
+> https://drive.google.com/file/d/15AByLpofXC3kYBewj1hQvGm_wATVEsaU/view?usp=drive_link
+> En Virtual Box, importar a máquina e ao entrar, introducir a seguinte contrasinal "abc123.".
+> Por último clonar o repositorio con clone "proxecto" e finalmente, dirixirse ao proxecto, abrir unha terminal e escribir code e o nombre da carpeta do proxecto.
+> Logo escribir sudo docker-compose up e escribir na url do navegador "localhost".
 
 ## Uso
 
