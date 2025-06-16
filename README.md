@@ -30,6 +30,13 @@ Máquina virtual:
 > En Virtual Box, importar a máquina e ao entrar, introducir a seguinte contrasinal "abc123.".
 > Por último clonar o repositorio con clone "proxecto" e finalmente, dirixirse ao proxecto, abrir unha terminal e escribir code e o nombre da carpeta do proxecto.
 > Logo escribir sudo docker-compose up e escribir na url do navegador "localhost".
+> Usuarios para acceder a web:
+> - Conta normal: 
+> usuario: agarcia7
+> contrasinal: agarcia7
+> - Conta premium
+> usuario: mindseye
+> contrasinal: mindseye
 
 ## Uso
 
