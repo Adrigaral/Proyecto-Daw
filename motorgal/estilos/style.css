@@ -75,6 +75,10 @@ p.descrip{
   gap: 2rem;
 }
 
+.btn-info{
+  background-color: blue !important;
+}
+
 .btn {
   background-color: #DC2626;
 }
@@ -106,7 +110,7 @@ button, .btn-inset, a.btn{
 }
 
 .card-body{
-  color: #888E97;
+  color: #283241;
 }
 
 .descrip{
@@ -173,8 +177,8 @@ section.hero-section, main {
 
 .about-text {
   font-family: 'Judson';
-  color: #E45959;
-  font-size: 20px;
+  color: white;
+  font-size: 22px;
 }
 
 .about-img {

@@ -23,7 +23,8 @@
                         <input type="hidden" name="action" value="listarEventosUsuario">
                         <div class="row gy-2">
                             <div class="col-12 col-md-4">
-                                <input type="text" name="lugar" class="form-control form-control-sm" placeholder="Lugar del evento" value="<?= htmlspecialchars($data['lugar'] ?? '') ?>">
+                                <label for="lugar" class="visually-hidden">Lugar</label>
+                                <input type="text" name="lugar" id="lugar" class="form-control form-control-sm" placeholder="Lugar del evento" value="<?= htmlspecialchars($data['lugar'] ?? '') ?>">
                             </div>
                             <div class="col-12 col-md-4">
                                 <select name="estado" class="form-select form-select-sm">
@@ -56,12 +57,12 @@
                     <div class="row justify-content-center">
                         <?php foreach ($data['eventos'] as $evento): ?>
                             <div class="col-md-4 mb-4">
-                                <div class="card h-100">
+                                <div class="card h-100 d-flex flex-column">
                                     <?php if (!empty($evento['foto_evento'])): ?>
                                         <img src="../img/uploads/<?= htmlspecialchars($evento['foto_evento']) ?>" class="card-img-top" alt="Imagen del evento">
                                     <?php endif; ?>
-                                    <div class="card-body">
-                                        <h5 class="card-title"><?= htmlspecialchars($evento['titulo']) ?></h5>
+                                    <div class="card-body d-flex flex-column">
+                                        <h3 class="card-title fw-bold"><?= htmlspecialchars($evento['titulo']) ?></h3>
                                         <p class="card-text"><?= htmlspecialchars($evento['descripcion']) ?></p>
                                         <p><strong>Estado:</strong>
                                             <?php
@@ -82,7 +83,7 @@
                                         <p><strong>Lugar:</strong> <?= htmlspecialchars($evento['lugar']) ?></p>
                                         <p><strong>Precio:</strong> <?= $evento['precio'] == 0.00 ? '<span class="text-success">Gratuito</span>' : '<span class="text-danger">' . htmlspecialchars($evento['precio']) . ' €</span>'; ?></p>
                                         <p><strong>Fecha Inscripción:</strong> <span class="text-success"><?= htmlspecialchars($evento['fecha_inscripcion']) ?></span></p>
-                                        <form action="index.php" method="GET">
+                                        <form action="index.php" method="GET" class="mt-auto">
                                             <input type="hidden" name="controller" value="EventoController">
                                             <input type="hidden" name="action" value="ver_evento">
                                             <input type="hidden" name="id" value="<?= $evento['id_evento'] ?>">

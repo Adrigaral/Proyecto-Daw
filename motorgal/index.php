@@ -49,5 +49,10 @@ if ($esPublico || ($usuario instanceof Usuario && UsuarioModel::tienePermiso($us
         (new InicioController())->principal();
     }
 } else {
-    (new InicioController())->principal();
+    if (!empty($_SESSION['loged'])) {
+        header('Location: index.php?controller=EventoController&action=lista_eventos_activos');
+        exit;
+    } else {
+        (new InicioController())->principal();
+    }
 }

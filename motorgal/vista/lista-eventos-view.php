@@ -53,7 +53,8 @@
                     <form method="get" action="index.php" class="d-flex align-items-center gap-2">
                         <input type="hidden" name="controller" value="EventoController">
                         <input type="hidden" name="action" value="lista_eventos_activos">
-                        <input type="text" name="lugar" class="form-control form-control-sm" placeholder="Lugar del evento" value="<?= htmlspecialchars($data['lugar'] ?? '') ?>" style="max-width: 200px;">
+                        <label for="lugar" class="visually-hidden">Lugar</label>
+                        <input type="text" name="lugar" id="lugar" class="form-control form-control-sm" placeholder="Lugar del evento" value="<?= htmlspecialchars($data['lugar'] ?? '') ?>" style="max-width: 200px;">
                         <select name="modelo" class="form-select form-select-sm" style="max-width: 200px;">
                             <option value="">Todos los modelos</option>
                             <?php foreach ($data['modelos'] as $m): ?>
@@ -78,7 +79,7 @@
                                     <figure class="card-img-container m-0">
                                         <img src="../img/uploads/<?php echo $evento->getFoto_evento(); ?>" class="card-img-top img-fluid" alt="Imagen evento">
                                     </figure>
-                                    <section class="card-body">
+                                    <section class="card-body d-flex flex-column">
                                         <h5 class="card-title"><?= htmlspecialchars($evento->getTitulo()) ?></h5>
                                         <ul class="list-unstyled mb-3">
                                             <li class="list-group-item d-flex align-items-center gap-2 mb-2">
@@ -111,7 +112,7 @@
                                             </li>
                                         </ul>
 
-                                        <section class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+                                        <section class="mt-auto d-flex justify-content-between align-items-center gap-2">
                                             <p class="gasto mb-0 d-flex align-items-center">Coste: <?= $evento->getPrecio() == 0.00 ? 'Gratuito' : htmlspecialchars($evento->getPrecio()) . ' &euro;'; ?></p>
                                             <form action="index.php" method="GET">
                                                 <input type="hidden" name="controller" value="EventoController">

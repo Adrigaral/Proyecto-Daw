@@ -25,7 +25,8 @@
 
                         <div class="row gy-2">
                             <div class="col-12 col-md-4">
-                                <input type="text" name="lugar" class="form-control form-control-sm" placeholder="Lugar del evento" value="<?= htmlspecialchars($data['lugar'] ?? '') ?>">
+                                <label for="lugar" class="visually-hidden">Lugar</label>
+                                <input type="text" name="lugar" id="lugar" class="form-control form-control-sm" placeholder="Lugar del evento" value="<?= htmlspecialchars($data['lugar'] ?? '') ?>">
                             </div>
                             <div class="col-12 col-md-4">
                                 <select name="estado" class="form-select form-select-sm">
@@ -77,7 +78,7 @@
                                 <div class="card shadow-lg border-0 h-100 overflow-hidden rounded-4 position-relative">
                                     <?php if (!empty($evento['foto_evento'])): ?>
                                         <div class="position-relative">
-                                            <img src="../img/uploads/<?= htmlspecialchars($evento['foto_evento']) ?>" class="card-img-top object-fit-cover" style="height: 180px;" alt="Imagen del evento">
+                                            <img src="../img/uploads/<?= htmlspecialchars($evento['foto_evento']) ?>" class="card-img-top object-fit-cover" style="height: 180px;" alt="Imagen del evento <?= htmlspecialchars($evento['titulo']) ?>">
                                             <div class="position-absolute top-0 start-0 bg-dark bg-opacity-50 text-white px-3 py-1 rounded-end-bottom">
                                                 <?= htmlspecialchars($evento['titulo']) ?>
                                             </div>
